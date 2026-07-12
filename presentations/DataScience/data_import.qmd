@@ -3,7 +3,7 @@ title: "Data Import"
 subtitle: "Getting data into R"
 author: "Ian Weidling"
 institute: "University of Kansas Medical Center"
-date: 2026-07-08
+date: 2026-07-15
 image: "../../images/thumbnails/image-template.png"
 format:
   revealjs:
@@ -23,6 +23,8 @@ format:
 execute:
   freeze: auto
 ---
+
+<!-- Updated version: section-by-section coding breaks; expanded R4DS rectangling section. -->
 
 ## Data import {.title-slide}
 
@@ -46,16 +48,51 @@ By the end of today, you should be able to:
 - Recognize when data is rectangular, hierarchical, or web-based
 - Practice debugging import problems independently
 
-## Class plan
+## Class plan: demo → coding break cycles
 
-| Segment | Time | Goal |
-|---|---:|---|
-| Presentation + live examples | 45 min | See the major tools and workflow |
-| Independent practice | 35 min | Work through import challenges |
-| Discussion / share-out | 10 min | Compare solutions and common problems |
+Today is organized as **six short teaching sections**, each followed immediately by a **small coding break**.
+
+| Cycle | Section | Demo focus | Coding break |
+|---:|---|---|---|
+| 1 | Text files and `readr` | CSV/TSV import, missing values, parsing problems | Import and diagnose a messy CSV |
+| 2 | Spreadsheets | Sheets, ranges, skipped rows, clean names | Import the true data rectangle from Excel |
+| 3 | Databases | Lazy tables, SQL translation, `collect()` | Query a SQLite table with `dplyr` |
+| 4 | Arrow and Parquet | Columnar files and larger-than-memory workflows | Write, read, and compare Parquet vs CSV |
+| 5 | Hierarchical data and rectangling | Lists, list-columns, `unnest_*()`, JSON | Rectangle nested student records |
+| 6 | Web scraping | HTML, selectors, tables, responsible scraping | Extract and clean an HTML table |
+
+::: {.highlight-box}
+**Teaching pattern:** learn a concept → see a short demo → immediately practice it.
+:::
+
+## Coding break roadmap
+
+Each break is designed to be small enough to finish during class.
+
+| Break | Practical example | Main functions |
+|---:|---|---|
+| 1 | Messy inline student CSV | `read_csv()`, `na`, `col_types`, `problems()` |
+| 2 | Built-in `readxl` deaths workbook | `read_excel()`, `range`, `skip`, `excel_sheets()` |
+| 3 | In-memory SQLite copy of `mpg` | `DBI`, `tbl()`, `show_query()`, `collect()` |
+| 4 | Local `mpg.parquet` file | `write_parquet()`, `read_parquet()`, `open_dataset()` |
+| 5 | Nested student records | `str()`, `hoist()`, `unnest_wider()`, `unnest_longer()` |
+| 6 | `rvest` Star Wars HTML page | `read_html()`, `html_elements()`, `html_table()` |
 
 ::: {.tip-box}
-The goal is not to memorize every function. The goal is to recognize the **shape and source** of the data and know where to start.
+The final practice block is optional. The main practice is now embedded throughout the session.
+:::
+
+## How the coding breaks work
+
+At each coding break:
+
+1. Run the starter code exactly as written
+2. Complete the **Your turn** tasks
+3. Compare your output to the **Expected result**
+4. Try the **Stretch** task if you finish early
+
+::: {.highlight-box}
+The goal is not speed. The goal is to practice the import workflow while the relevant functions are still fresh.
 :::
 
 ## Where import fits in data science
@@ -447,6 +484,46 @@ write_rds(students, "data/clean_students.rds")
 students <- read_rds("data/clean_students.rds")
 ```
 
+## Coding Break 1 of 6: Text files and `readr`
+
+::: {.highlight-box}
+**Practice example:** import a small messy CSV and diagnose what R guessed.
+:::
+
+**Time:** 8 minutes  
+**Reference:** R4DS data import workflow: import → inspect → diagnose → re-import with better arguments
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+
+students <- read_csv(
+  "id,name,score,passed
+001,Ana,88,yes
+002,Ben,.,no
+003,Clara,91,yes
+004,Diego,not collected,no",
+  na = c("", ".", "not collected"),
+  col_types = cols(id = col_character())
+)
+
+glimpse(students)
+spec(students)
+problems(students)
+```
+
+**Your turn:**
+
+- Confirm `id` stayed character instead of becoming numeric
+- Confirm `.` and `not collected` became `NA`
+- Re-run the import after removing one value from `na =` and inspect what changes
+- Use `count(passed)` to check whether the yes/no column imported as expected
+
+**Expected result:** 4 rows, 4 columns, `id` is character, and the missing scores are `NA`.
+
+**Stretch:** import the same text using `read_delim()` and specify `delim = ","`.
+
 # Spreadsheets
 
 ## Why spreadsheets are different
@@ -596,6 +673,45 @@ For analysis-friendly spreadsheets:
 If you receive messy Excel files, import the data first, then clean it in R rather than manually editing the original file.
 :::
 
+## Coding Break 2 of 6: Spreadsheets
+
+::: {.highlight-box}
+**Practice example:** use `readxl` arguments to import only the true data rectangle from a messy workbook.
+:::
+
+**Time:** 7 minutes  
+**Reference:** R4DS spreadsheet strategy: inspect sheets, skip metadata, target the cell range
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+library(readxl)
+
+path <- readxl_example("deaths.xlsx")
+excel_sheets(path)
+
+# First read: intentionally messy
+raw <- read_excel(path)
+
+# Better read: target the actual data rectangle
+deaths <- read_excel(path, range = "A5:F15")
+
+glimpse(raw)
+glimpse(deaths)
+```
+
+**Your turn:**
+
+- Compare `raw` and `deaths`: which one is analysis-ready?
+- Replace `range = "A5:F15"` with `skip =` and `n_max =`
+- Clean the column names with `janitor::clean_names()` if available
+- Count how many rows are in the cleaned data
+
+**Expected result:** the cleaned object should contain only the table, not the title or notes above it.
+
+**Stretch:** explain what information in the workbook should *not* be part of the data frame.
+
 # Databases
 
 ## Why databases?
@@ -718,6 +834,53 @@ dbDisconnect(con, shutdown = TRUE)
 
 Forgetting to disconnect is usually not disastrous in class, but it is good practice.
 
+## Coding Break 3 of 6: Databases
+
+::: {.highlight-box}
+**Practice example:** use `dplyr` verbs on a database table, then collect only the result you need.
+:::
+
+**Time:** 5 minutes  
+**Reference:** R4DS database workflow: connect → reference a table → query lazily → `collect()`
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+library(DBI)
+library(dbplyr)
+
+con <- dbConnect(RSQLite::SQLite(), ":memory:")
+copy_to(con, mpg, "mpg", temporary = FALSE, overwrite = TRUE)
+
+mpg_db <- tbl(con, "mpg")
+
+compact_summary <- mpg_db |>
+  filter(class == "compact") |>
+  group_by(manufacturer) |>
+  summarize(
+    n = n(),
+    mean_hwy = mean(hwy, na.rm = TRUE),
+    .groups = "drop"
+  ) |>
+  arrange(desc(mean_hwy))
+
+compact_summary |> show_query()
+compact_summary |> collect()
+
+dbDisconnect(con)
+```
+
+**Your turn:**
+
+- Change the filter to a different `class`
+- Use `show_query()` before `collect()`
+- Move `collect()` earlier in the pipeline and discuss what changes
+
+**Expected result:** a small local tibble only after `collect()` is called.
+
+**Stretch:** add `min_hwy` and `max_hwy` to the summary.
+
 # Arrow and Parquet
 
 ## Why Arrow?
@@ -796,9 +959,50 @@ The workflow is similar to databases: delay loading the data until the result is
 | Works everywhere | Yes | Increasingly yes |
 | Good for long-term sharing | Often | Often, with documentation |
 
+## Coding Break 4 of 6: Arrow and Parquet
+
+::: {.highlight-box}
+**Practice example:** write a Parquet file, read it back, and compare it with CSV.
+:::
+
+**Time:** 5 minutes  
+**Reference:** R4DS Arrow workflow: use Parquet/Arrow when data is large, columnar, or split across files
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+library(arrow)
+
+dir.create("data", showWarnings = FALSE)
+
+write_csv(mpg, "data/mpg.csv")
+write_parquet(mpg, "data/mpg.parquet")
+
+mpg_csv <- read_csv("data/mpg.csv")
+mpg_parquet <- read_parquet("data/mpg.parquet")
+
+glimpse(mpg_csv)
+glimpse(mpg_parquet)
+
+file.info("data/mpg.csv", "data/mpg.parquet") |>
+  as_tibble(rownames = "file") |>
+  select(file, size)
+```
+
+**Your turn:**
+
+- Compare the column types from CSV and Parquet
+- Compare file sizes with `file.info()`
+- Filter `mpg_parquet` to one manufacturer
+
+**Expected result:** both imports should contain the same observations, but Parquet preserves column types more explicitly.
+
+**Stretch:** use `open_dataset("data/mpg.parquet")`, filter lazily, then call `collect()`.
+
 # Hierarchical data and rectangling
 
-## Rectangular vs hierarchical data
+## Why hierarchical data is different
 
 Most tidyverse tools expect rectangular data:
 
@@ -807,74 +1011,240 @@ rows = observations
 columns = variables
 ```
 
-But many data sources are hierarchical:
+But data from APIs, web services, and JSON often arrives as a **tree**.
 
 ```text
 student
   ├── id
   ├── name
-  ├── scores
-  │     ├── quiz 1
-  │     └── quiz 2
-  └── contact
-        ├── email
-        └── phone
+  ├── contact
+  │     ├── email
+  │     └── year
+  └── scores
+        ├── quiz 1
+        └── quiz 2
 ```
 
-## JSON
+::: {.highlight-box}
+**Rectangling** means taking hierarchical, tree-like data and converting it into rows and columns.
+:::
 
-JSON is a common format for APIs and web data.
+## Chapter roadmap
 
-```json
-[
-  {
-    "id": 1,
-    "name": "Ana",
-    "scores": [88, 91],
-    "contact": {"email": "ana@example.edu", "year": 2}
-  }
-]
-```
+R4DS builds the rectangling chapter in this order:
 
-The challenge is converting nested lists into a rectangular table.
+1. **Lists**: the R data structure that can hold hierarchy
+2. **List-columns**: lists inside tibbles
+3. **Unnesting**: converting list-columns into rows or columns
+4. **Case studies**: repeated widening and lengthening
+5. **JSON**: the most common source of hierarchical data from the web
 
-## Read JSON
+::: {.tip-box}
+The core skill is learning to inspect one level of the hierarchy at a time.
+:::
+
+## Lists can preserve hierarchy
+
+Atomic vectors are homogeneous and flat. Lists can hold different types and can contain other lists.
 
 ```{r}
 #| eval: false
 #| echo: true
-library(jsonlite)
+x1 <- list(1:4, "a", TRUE)
+str(x1)
 
-students_json <- fromJSON("data/students.json", simplifyVector = FALSE)
+x2 <- list(
+  id = 1,
+  name = "Ana",
+  contact = list(email = "ana@example.edu", year = 2),
+  scores = list(88, 91)
+)
+str(x2)
 ```
 
-Inspect the structure:
+::: {.tip-box}
+Use `str()` for a compact view. Use `View()` when the object becomes too deep to understand in the console.
+:::
+
+## `c()` flattens; `list()` preserves
+
+This distinction is subtle but important.
 
 ```{r}
 #| eval: false
 #| echo: true
-str(students_json, max.level = 2)
+c(c(1, 2), c(3, 4))
+
+list(list(1, 2), list(3, 4)) |>
+  str()
 ```
 
-## Convert to a tibble
+`c()` combines values into one flat vector when it can.  
+`list()` keeps the nested structure intact.
+
+## List-columns
+
+A tibble can contain a list-column: a column where each cell is a list.
 
 ```{r}
 #| eval: false
 #| echo: true
-students_nested <- tibble(record = students_json)
+df <- tibble(
+  student = c("Ana", "Ben"),
+  scores = list(
+    list(88, 91),
+    list(72, 85, 90)
+  )
+)
 
-students_nested
+df
+df |> pull(scores) |> str()
 ```
 
-A list-column can store complex objects inside a tibble.
+List-columns are common after reading JSON or nesting data. They print compactly because each cell may contain many values.
 
-## hoist()
+## Named versus unnamed list-columns
 
-Use `hoist()` to pull named components out of a list-column.
+R4DS emphasizes two common shapes.
 
 ```{r}
 #| eval: false
 #| echo: true
+# Named elements: usually become columns
+df_named <- tribble(
+  ~x , ~y                   ,
+   1 , list(a = 11, b = 12) ,
+   2 , list(a = 21, b = 22) ,
+   3 , list(a = 31, b = 32)
+)
+
+# Unnamed repeated elements: usually become rows
+df_unnamed <- tribble(
+  ~x , ~y               ,
+   1 , list(11, 12, 13) ,
+   2 , list(21)         ,
+   3 , list(31, 32)
+)
+```
+
+## The core decision
+
+| What the list-column contains | Natural direction | Function |
+|---|---|---|
+| Named pieces with stable names | Make variables | `unnest_wider()` |
+| Repeated values within an observation | Make observations | `unnest_longer()` |
+| Many nested pieces but you only need a few | Extract selected variables | `hoist()` |
+| A nested data frame | Expand rows and columns | `unnest()` |
+
+::: {.highlight-box}
+First ask: “Do these children represent **variables** or **repeated observations**?”
+:::
+
+## `unnest_wider()` for named elements
+
+When each list has named pieces, put each piece into its own column.
+
+```{r}
+#| eval: false
+#| echo: true
+df_named |>
+  unnest_wider(y)
+```
+
+Use `names_sep =` when the new names might conflict or when you want to preserve the original column name.
+
+```{r}
+#| eval: false
+#| echo: true
+df_named |>
+  unnest_wider(y, names_sep = "_")
+```
+
+## `unnest_longer()` for repeated values
+
+When each row contains multiple values of the same kind, put each value into its own row.
+
+```{r}
+#| eval: false
+#| echo: true
+df_unnamed |>
+  unnest_longer(y)
+```
+
+Notice what happens: the other columns are repeated as needed.
+
+## Empty values can drop rows
+
+By default, a row with an empty list contributes zero rows.
+
+```{r}
+#| eval: false
+#| echo: true
+df_empty <- tribble(
+  ~student , ~scores      ,
+  "Ana"    , list(88, 91) ,
+  "Ben"    , list(72)     ,
+  "Clara"  , list()
+)
+
+df_empty |>
+  unnest_longer(scores)
+```
+
+Use `keep_empty = TRUE` if the empty observation should remain.
+
+```{r}
+#| eval: false
+#| echo: true
+df_empty |>
+  unnest_longer(scores, keep_empty = TRUE)
+```
+
+## Inconsistent types may stay as lists
+
+Sometimes a list-column contains values that cannot be combined into one atomic type.
+
+```{r}
+#| eval: false
+#| echo: true
+df_mixed <- tribble(
+  ~x  , ~y                 ,
+  "a" , list(1)            ,
+  "b" , list("a", TRUE, 5)
+)
+
+df_mixed |>
+  unnest_longer(y)
+```
+
+::: {.tip-box}
+If R cannot find a common type, the result may remain a list-column. That is not a failure; it means you need to inspect and clean deliberately.
+:::
+
+## `hoist()` extracts selected pieces
+
+`unnest_wider()` can create many columns. Use `hoist()` when you only want a few fields.
+
+```{r}
+#| eval: false
+#| echo: true
+students_nested <- tibble(
+  record = list(
+    list(
+      id = 1,
+      name = "Ana",
+      scores = list(88, 91),
+      contact = list(email = "ana@example.edu", year = 2)
+    ),
+    list(
+      id = 2,
+      name = "Ben",
+      scores = list(72, 85, 90),
+      contact = list(email = "ben@example.edu", year = 1)
+    )
+  )
+)
+
 students <- students_nested |>
   hoist(
     record,
@@ -883,56 +1253,142 @@ students <- students_nested |>
     scores = "scores",
     contact = "contact"
   )
+
+students
 ```
 
-## unnest_wider()
+## Case-study pattern: one level at a time
 
-Use `unnest_wider()` when one element contains several named values.
+Real hierarchical data usually needs repeated steps.
+
+```text
+Inspect
+  ↓
+If you see a list of records → unnest_longer()
+  ↓
+If each record is a named list → unnest_wider() or hoist()
+  ↓
+If a field is another named list → unnest_wider()
+  ↓
+If a field contains repeated values → unnest_longer()
+  ↓
+Inspect again
+```
+
+::: {.highlight-box}
+Rectangling is iterative: inspect → choose wider/longer/hoist → inspect again.
+:::
+
+## JSON is a common source of hierarchy
+
+JSON is common for APIs and web data.
+
+```json
+[
+  {
+    "id": 1,
+    "name": "Ana",
+    "contact": {"email": "ana@example.edu", "year": 2},
+    "scores": [88, 91]
+  },
+  {
+    "id": 2,
+    "name": "Ben",
+    "contact": {"email": "ben@example.edu", "year": 1},
+    "scores": [72, 85, 90]
+  }
+]
+```
+
+## Read JSON, then rectangle it
+
+Use `jsonlite::fromJSON(..., simplifyVector = FALSE)` when you want to preserve the hierarchy and learn how to rectangle it yourself.
 
 ```{r}
 #| eval: false
 #| echo: true
-students_wide <- students |>
-  unnest_wider(contact)
+library(jsonlite)
+library(tidyverse)
+
+students_json <- fromJSON("data/students.json", simplifyVector = FALSE)
+
+students <- tibble(record = students_json) |>
+  hoist(
+    record,
+    id = "id",
+    name = "name",
+    contact = "contact",
+    scores = "scores"
+  ) |>
+  unnest_wider(contact) |>
+  unnest_longer(scores, values_to = "score", keep_empty = TRUE)
+
+students
 ```
-
-This turns:
-
-```text
-contact = list(email = ..., year = ...)
-```
-
-into columns:
-
-```text
-email, year
-```
-
-## unnest_longer()
-
-Use `unnest_longer()` when one observation contains multiple values.
-
-```{r}
-#| eval: false
-#| echo: true
-students_scores <- students_wide |>
-  unnest_longer(scores, values_to = "score")
-```
-
-This turns one row with multiple scores into multiple rows.
 
 ## Rectangling decision guide
 
-| Problem | Function |
-|---|---|
-| Pull named elements from a list-column | `hoist()` |
-| Expand named values into columns | `unnest_wider()` |
-| Expand repeated values into rows | `unnest_longer()` |
-| Simplify nested data frames | `unnest()` |
+| If you see... | Ask... | Try... |
+|---|---|---|
+| A top-level list of records | Does each element represent a row? | `tibble(record = x)` then `unnest_longer()` if needed |
+| A named list-column | Are these variables? | `unnest_wider()` |
+| A huge named list-column | Do I only need a few fields? | `hoist()` |
+| A repeated unnamed list | Are these repeated observations? | `unnest_longer()` |
+| Empty values | Should missing observations be kept? | `keep_empty = TRUE` |
+| Mixed types | Can they share a type? | inspect, then clean deliberately |
 
-::: {.tip-box}
-Rectangling is often iterative: inspect, hoist, unnest, inspect again.
+## Coding Break 5 of 6: Hierarchical data and rectangling
+
+::: {.highlight-box}
+**Practice example:** turn nested student records into one row per student-score combination.
 :::
+
+**Time:** 9 minutes  
+**Reference:** R4DS rectangling workflow: inspect lists, then use `hoist()`, `unnest_wider()`, and `unnest_longer()` one level at a time
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+
+students_nested <- tibble(
+  record = list(
+    list(
+      id = 1,
+      name = "Ana",
+      scores = list(88, 91),
+      contact = list(email = "ana@example.edu", year = 2)
+    ),
+    list(
+      id = 2,
+      name = "Ben",
+      scores = list(72, 85, 90),
+      contact = list(email = "ben@example.edu", year = 1)
+    ),
+    list(
+      id = 3,
+      name = "Clara",
+      scores = list(),
+      contact = list(email = "clara@example.edu", year = 2)
+    )
+  )
+)
+
+students_nested |> pull(record) |> str(max.level = 2)
+```
+
+**Your turn:**
+
+- Use `hoist()` to extract `id`, `name`, `scores`, and `contact`
+- Use `unnest_wider(contact)` to create `email` and `year`
+- Use `unnest_longer(scores, values_to = "score", keep_empty = TRUE)`
+- Rename or arrange the final columns so the result is easy to read
+
+**Expected result:** one row per student-score combination, with Clara retained as a row with `score = NA`.
+
+**Stretch:** add `score_missing = is.na(score)` and calculate each student's mean score.
+
+# Web scraping
 
 # Web scraping
 
@@ -1039,6 +1495,45 @@ Before scraping:
 Just because you can scrape something does not mean you should.
 :::
 
+## Coding Break 6 of 6: Web scraping
+
+::: {.highlight-box}
+**Practice example:** read an HTML page and extract a table.
+:::
+
+**Time:** 5 minutes  
+**Reference:** R4DS web scraping workflow: read HTML → select elements → extract text or tables → clean the result
+
+```{r}
+#| eval: false
+#| echo: true
+library(tidyverse)
+library(rvest)
+
+url <- "https://rvest.tidyverse.org/articles/starwars.html"
+
+page <- read_html(url)
+
+tables <- page |>
+  html_elements("table") |>
+  html_table()
+
+length(tables)
+starwars_table <- tables[[1]]
+glimpse(starwars_table)
+```
+
+**Your turn:**
+
+- Extract the first table from the page
+- Clean column names if needed
+- Use `filter()` or `arrange()` to answer one question about the table
+- Identify one CSS selector on the page using browser developer tools
+
+**Expected result:** a tibble created from an HTML table.
+
+**Stretch:** extract a non-table element, such as headings or links, using `html_elements()` and `html_text2()`.
+
 # Choosing a strategy
 
 ## What should I use?
@@ -1089,71 +1584,23 @@ df <- df |>
   janitor::clean_names()
 ```
 
-# Hands-on practice
+# Final synthesis
 
-## Practice structure
+## Optional final challenge
 
-::: {.highlight-box}
-Work through the activity for your level — and continue to the next if you finish early.
-:::
+If there is time left after the section-by-section coding breaks, choose one mini-project:
 
-| Level | Activity | Focus |
+| Option | Starting point | Goal |
 |---|---|---|
-| 🟢 Beginner | Activity 1 | Import CSV/TSV and inspect problems |
-| 🟡 Intermediate | Activity 2 | Import Excel sheets and combine files |
-| 🔴 Advanced | Activity 3 | Databases, Arrow, JSON, or web scraping |
-
-## Activity 1: Text files
-
-Open **data_import_activities.qmd** and complete Activity 1.
-
-Goals:
-
-- Import a CSV
-- Import a TSV
-- Use `glimpse()` and `problems()`
-- Fix missing value codes
-- Specify at least one column type
-
-```{r}
-#| eval: false
-#| echo: true
-students <- read_csv(
-  "data/students.csv",
-  na = c("", "NA", ".")
-)
-```
-
-## Activity 2: Spreadsheets and folders
-
-Goals:
-
-- Use `excel_sheets()`
-- Read a specific sheet
-- Clean column names
-- Import multiple files from a folder
-- Combine them into one tibble
-
-```{r}
-#| eval: false
-#| echo: true
-files <- list.files("data/monthly", full.names = TRUE)
-
-monthly <- files |>
-  map_dfr(read_csv, .id = "file_id")
-```
-
-## Activity 3: Choose your challenge
-
-Choose one advanced task:
-
-1. Query a local DuckDB database using dplyr
-2. Read/write a Parquet file with Arrow
-3. Rectangle a JSON file with `hoist()` and `unnest_*()`
-4. Scrape an HTML table with `rvest`
+| Text files | Messy inline CSV | Import with correct missing values and types |
+| Spreadsheets | `readxl_example("deaths.xlsx")` | Import only the true data rectangle |
+| Databases | `mpg` copied to SQLite | Query with `dplyr`, then `collect()` |
+| Arrow | `mpg.parquet` | Compare CSV and Parquet workflows |
+| Rectangling | Nested student records | Create one row per repeated value |
+| Web scraping | `rvest` Star Wars page | Extract and clean an HTML table |
 
 ::: {.tip-box}
-Advanced does not mean more typing. It means choosing the right import strategy for less familiar data.
+The final challenge is optional. The main practice happens at the end of each section.
 :::
 
 ## Share-out questions
