@@ -3,7 +3,7 @@ title: "Data Import"
 subtitle: "Getting data into R"
 author: "Ian Weidling"
 institute: "University of Kansas Medical Center"
-date: 2026-07-15
+date: 2026-07-08
 image: "../../images/thumbnails/image-template.png"
 format:
   revealjs:
