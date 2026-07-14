@@ -32,9 +32,8 @@ execute:
 
 . . .
 
-Today we will focus on the practical question every data analysis begins with:
+Today we will focus on the practical question every data analysis begins with
 
-> How do I get this data into R correctly?
 
 ::: {.notes}
 Emphasize that this lecture is not just about memorizing functions. The goal is to help students recognize what kind of data source they have and choose an import strategy that preserves the meaning of the data.
@@ -63,9 +62,9 @@ Frame these goals as practical skills. Students do not need mastery of every edg
 
 | Section | Topic | Instructor-led | Student practice |
 |---|---|---:|---:|
-| 1 | Importing files into R | ~15 min | Coding Break 1 — 12 min |
-| 2 | Working with databases and large datasets | ~15 min | Coding Break 2 — 12 min |
-| 3 | Hierarchical and web data | ~15 min | Coding Break 3 — 12 min |
+| 1 | Importing files into R | ~15 min | Coding Break 1 — 10 min |
+| 2 | Working with databases and large datasets | ~15 min | Coding Break 2 — 15 min |
+| 3 | Hierarchical and web data | ~15 min | Coding Break 3 — 10 min |
 
 ::: {.tip-box}
 💡 The goal is not to memorize every argument. The goal is to practice the workflow: **import → inspect → fix → continue**.
@@ -119,8 +118,6 @@ Avoid file paths that only work on your computer, like `C:/Users/yourname/Downlo
 ::: {.notes}
 Explain that many “import problems” are really file path problems. Relative paths make code shareable across computers because they describe the location of a file within the project rather than the location of the project on one person’s machine.
 :::
-
-# Importing Files into R
 
 ## Section 1: Importing files into R {.title-slide}
 
@@ -371,8 +368,6 @@ penguins_year_chr |> glimpse()
 During discussion, ask students why they might want to treat a year as character. The answer is not that year is always character, but that analysts should decide based on how the variable will be used.
 :::
 
-# Working with Databases and Large Datasets
-
 ## Section 2: Working with databases and large datasets {.title-slide}
 
 ::: {.highlight-box}
@@ -403,30 +398,27 @@ Compared with a CSV, a database can:
 This slide provides the “why” for databases. A CSV is loaded into memory all at once. A database can stay where it is, while R sends instructions about what subset to retrieve.
 :::
 
-## Create and reference a demo database
+## Database workflow: connect, reference, then query
 
-For teaching, we can simulate a database on our own computer.
+When working with a database, R does **not** usually import the whole dataset right away.
 
-```r
-library(DBI)
-library(RSQLite)
-library(dbplyr)
-library(palmerpenguins)
+Instead, the workflow is:
 
-con <- dbConnect(SQLite(), ":memory:")
-
-copy_to(con, penguins, "penguins", temporary = FALSE)
-
-penguins_db <- tbl(con, "penguins")
-penguins_db
-```
+1. **Connect** to the database
+2. **Reference** a table with `tbl()`
+3. **Build a query** using dplyr verbs
+4. **Collect** only the result you need
 
 ::: {.highlight-box}
-`tbl()` creates a reference to a database table, not a local tibble.
+`tbl()` is like a pointer to a table that lives somewhere else. It lets you work with the table without copying everything into R.
+:::
+
+::: {.tip-box}
+💡 In the coding break, we will create a small temporary database from Palmer Penguins so you can practice this workflow without needing access to a real institutional database.
 :::
 
 ::: {.notes}
-This consolidates the old database setup and table reference slides. The key takeaway is that the object returned by `tbl()` points to data in the database. It does not pull all rows into R yet.
+This slide replaces the large setup code block with the conceptual takeaway. Emphasize that the setup code is not the lesson; the lesson is the mental model. In database workflows, you first connect, then reference a table, then write a query, and only at the end collect a smaller result into R.
 :::
 
 ## Use dplyr on a database
@@ -563,8 +555,6 @@ dbDisconnect(con)
 ::: {.notes}
 In the discussion, highlight the order of operations. Students first create a lazy query against the database, then collect only the small summary table.
 :::
-
-# Hierarchical and Web Data
 
 ## Section 3: Hierarchical and web data {.title-slide}
 
@@ -723,6 +713,38 @@ df |> unnest_longer(tags)
 
 ::: {.notes}
 This replaces separate wider/longer slides with a compact comparison. Explain that named measurement values behave like variables, while repeated tags behave like multiple observations.
+:::
+
+## What is JSON?
+
+::: {.highlight-box}
+**JSON** stands for **JavaScript Object Notation**. It is a common format for storing and exchanging hierarchical data.
+:::
+
+You will often encounter JSON when data comes from:
+
+- Web APIs
+- Public data portals
+- Application logs
+- Web services
+- Nested metadata files
+
+JSON can represent structures that do not fit neatly into rows and columns right away:
+
+```text
+{
+  "name": "Ava",
+  "scores": [90, 92],
+  "metadata": {"group": "A", "site": "KC"}
+}
+```
+
+::: {.tip-box}
+💡 Many APIs return JSON because it can store nested information. In R, JSON often becomes a list or list-column, so we use rectangling tools to turn it into a tibble.
+:::
+
+::: {.notes}
+Use this slide to connect rectangling to real data sources. JSON is common in APIs because it can represent nested structures: one person can have multiple scores, metadata can have named subfields, and records do not need to be perfectly rectangular at first. The key transition is that JSON data often enters R as lists, and rectangling turns those lists into columns and rows.
 :::
 
 ## Read JSON, then rectangle it
