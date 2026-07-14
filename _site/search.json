@@ -65,212 +65,261 @@
   {
     "objectID": "presentations/DataScience/visualization.html#what-is-ggplot2",
     "href": "presentations/DataScience/visualization.html#what-is-ggplot2",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "What is ggplot2?",
     "text": "What is ggplot2?\n\nggplot2 is a popular R package for creating data visualizations\n“Grammar of Graphics” - build visualization by combining independent components\n\n\nKey Strengths:\n\nVersatile (scatterplots, boxplots, barcharts…)\nCustomizable: easily change formatting, fonts, colors…\nPublication-quality graphics\nOpen source and free"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#components-of-creating-a-chart-with-ggplot",
     "href": "presentations/DataScience/visualization.html#components-of-creating-a-chart-with-ggplot",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "7 components of creating a chart with ggplot",
-    "text": "7 components of creating a chart with ggplot\n\n\nEssential components: data, mapping, and layer\nOptional components: scales, facets, coordinates, and themes\n\nDefault modes unless modified directly"
+    "text": "7 components of creating a chart with ggplot\n\n\nEssential components: data, mapping, and layers\nOptional components: scales, facets, coordinates, and themes"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#essential-components",
     "href": "presentations/DataScience/visualization.html#essential-components",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Essential Components",
-    "text": "Essential Components\nData: Specifies the dataset for the plot\n\nggplot(data = datasetname)\n\nMapping: set of instructions on how to “map” data - In other words, it defines which variables to include and how - Uses aes() function to define aesthetics of plot\n\nggplot(data = datasetname, mapping = aes(x = height, y = weight))\n\nLayers: defines how to display the mapped data - geom_() function: defines geometry to determine how data is displayed (points, lines, etc.). More on this soon!\n\nggplot(\n  data = datasetname,\n  mapping = aes(x = height, y = weight) +\n    geom_point()\n)"
+    "text": "Essential Components\nData: Specifies the dataset for the plot\n\nggplot(data = datasetname)\n\nMapping: set of instructions on how to “map” data\n\nIn other words, it defines which variables to include and how\nUses aes() to define aesthetics of plot\n\n\nggplot(data = datasetname, mapping = aes(x = height, y = weight))\n\nLayers: defines how to display the mapped data\n\ngeom_(): defines geometry to determine how data is displayed (points, lines, etc.). More on this soon!\n\n\nggplot(\n  data = datasetname,\n  mapping = aes(x = height, y = weight) +\n    geom_point()\n)"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#getting-started",
     "href": "presentations/DataScience/visualization.html#getting-started",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Getting Started",
     "text": "Getting Started\nInstallation Requirements:\n\nggplot2 is a core package of the tidyverse\ntidyverse must be installed and loaded\nYou only need to install the package once, but need to load it every time you start a session.\n\n\ninstall.packages(\"tidyverse\") # install package (once)\n\n\nlibrary(tidyverse) # load tidyverse (every new session)\n\n\n💡 Tip: Update R and packages regularly for latest features"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#palmer-penguin-package",
     "href": "presentations/DataScience/visualization.html#palmer-penguin-package",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Palmer Penguin Package",
-    "text": "Palmer Penguin Package\n\nPenguins dataset from the plamerpenguin package contains body measurements of penguins on three islands in the Palmer Archipelago, Antartica. We will be using this dataset to explore different visualizations using ggplot2.\n\n\nlibrary(palmerpenguins) # load palmer penguins dataset\npenguins # load a preview of the data\n\n# A tibble: 344 × 8\n   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;\n 1 Adelie  Torgersen           39.1          18.7               181        3750\n 2 Adelie  Torgersen           39.5          17.4               186        3800\n 3 Adelie  Torgersen           40.3          18                 195        3250\n 4 Adelie  Torgersen           NA            NA                  NA          NA\n 5 Adelie  Torgersen           36.7          19.3               193        3450\n 6 Adelie  Torgersen           39.3          20.6               190        3650\n 7 Adelie  Torgersen           38.9          17.8               181        3625\n 8 Adelie  Torgersen           39.2          19.6               195        4675\n 9 Adelie  Torgersen           34.1          18.1               193        3475\n10 Adelie  Torgersen           42            20.2               190        4250\n# ℹ 334 more rows\n# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;\n\n\n\nYou may need to run install.packages(“palmerpenguins”) if it wasn’t previously loaded on your system."
+    "text": "Palmer Penguin Package\n\nPenguins dataset from the plamerpenguin package contains body measurements of penguins on three islands in the Palmer Archipelago, Antartica. We will use this dataset as an example of how to build figures using ggplot2.\n\n\nlibrary(palmerpenguins) # load palmer penguins dataset\npenguins # load a preview of the data\n\n# A tibble: 344 × 8\n   species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g\n   &lt;fct&gt;   &lt;fct&gt;              &lt;dbl&gt;         &lt;dbl&gt;             &lt;int&gt;       &lt;int&gt;\n 1 Adelie  Torgersen           39.1          18.7               181        3750\n 2 Adelie  Torgersen           39.5          17.4               186        3800\n 3 Adelie  Torgersen           40.3          18                 195        3250\n 4 Adelie  Torgersen           NA            NA                  NA          NA\n 5 Adelie  Torgersen           36.7          19.3               193        3450\n 6 Adelie  Torgersen           39.3          20.6               190        3650\n 7 Adelie  Torgersen           38.9          17.8               181        3625\n 8 Adelie  Torgersen           39.2          19.6               195        4675\n 9 Adelie  Torgersen           34.1          18.1               193        3475\n10 Adelie  Torgersen           42            20.2               190        4250\n# ℹ 334 more rows\n# ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;\n\n\n\nYou may need to run install.packages(“palmerpenguins”) if it wasn’t previously loaded on your system."
   },
   {
     "objectID": "presentations/DataScience/visualization.html#creating-a-ggplot-with-penguins",
     "href": "presentations/DataScience/visualization.html#creating-a-ggplot-with-penguins",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Creating a ggplot with penguins",
     "text": "Creating a ggplot with penguins\n\nWhat is the relationship between flipper length and body mass index of penguins?\n\nStep 1: begin with the function ggplot(), telling it what data to use\nStep 2: add mapping layer, which defines the aesthetics (layout) of your plot, including defining your x and y axes\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n)"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#base-plot",
     "href": "presentations/DataScience/visualization.html#base-plot",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Base plot",
     "text": "Base plot"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#geometrical-object-layer-geom_",
     "href": "presentations/DataScience/visualization.html#geometrical-object-layer-geom_",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Geometrical object layer (geom_)",
     "text": "Geometrical object layer (geom_)\nThe geom_*() layer defines your plot type. We will create a scatterplot with penguins.\n\n\n\nPlot type\ngeom_\n\n\n\n\nBar chart\ngeom_bar()\n\n\nLine chart\ngeom_line()\n\n\nBoxplot\ngeom_boxplot()\n\n\nScatterplot\ngeom_point()\n\n\nViolin plot\ngeom_violin()\n\n\nHistogram\ngeom_histogram()\n\n\n\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point()"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#plot-data",
     "href": "presentations/DataScience/visualization.html#plot-data",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Plot data",
     "text": "Plot data"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#categorizing-by-species",
     "href": "presentations/DataScience/visualization.html#categorizing-by-species",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Categorizing by species",
     "text": "Categorizing by species\n\nDoes the relationship between flipper length and body mass index differ by species?\n\n\nnames(penguins) # view variable names in dataset\n\n[1] \"species\"           \"island\"            \"bill_length_mm\"   \n[4] \"bill_depth_mm\"     \"flipper_length_mm\" \"body_mass_g\"      \n[7] \"sex\"               \"year\"             \n\n\nModify aesthetics to categorize species by color.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)\n) +\n  geom_point()"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#categorize-species-by-color",
     "href": "presentations/DataScience/visualization.html#categorize-species-by-color",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Categorize species by color",
     "text": "Categorize species by color"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#adding-lines-of-best-fit",
     "href": "presentations/DataScience/visualization.html#adding-lines-of-best-fit",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Adding lines of best fit",
-    "text": "Adding lines of best fit\nNext we will ad smooth curves displaying the realtionship between body mass and flipper length by species.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)\n) +\n  geom_point() +\n  geom_smooth(method = \"lm\")\n\n# geom_smooth(): geometric object representing data with a smooth line\n# method = \"lm\": line of best fit based on a linear model"
+    "text": "Adding lines of best fit\nNext we will add smooth curves displaying the realtionship between body mass and flipper length by species.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g, color = species)\n) +\n  geom_point() +\n  geom_smooth(method = \"lm\")\n\n# geom_smooth(): geometric object representing data with a smooth line\n# method = \"lm\": line of best fit based on a linear model"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#linear-models",
     "href": "presentations/DataScience/visualization.html#linear-models",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Linear models",
     "text": "Linear models"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#single-line-of-best-fit",
     "href": "presentations/DataScience/visualization.html#single-line-of-best-fit",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Single line of best fit",
     "text": "Single line of best fit\nWhat if we want a single line of best fit, but still want to categorize by species?\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(mapping = aes(color = species)) +\n  geom_smooth(method = \"lm\")\n\n# color = species in geom_point: only apply color to points\n# geom_smooth(method = \"lm\") now applied to mapping = aes()"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#single-line-of-best-fit-1",
     "href": "presentations/DataScience/visualization.html#single-line-of-best-fit-1",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Single line of best fit",
     "text": "Single line of best fit"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#categorizing-by-shape",
     "href": "presentations/DataScience/visualization.html#categorizing-by-shape",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Categorizing by shape",
     "text": "Categorizing by shape\nPeople perceive colors differently, so it is generally not a good idea to categorize only by color. In addition to color, we can also categorize by shapes.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(mapping = aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\")"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#categorizing-by-shape-1",
     "href": "presentations/DataScience/visualization.html#categorizing-by-shape-1",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Categorizing by shape",
     "text": "Categorizing by shape"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#specify-titles-and-axes",
     "href": "presentations/DataScience/visualization.html#specify-titles-and-axes",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Specify Titles and Axes",
-    "text": "Specify Titles and Axes\nWe likely do not want the variable name in our dataset to be the title of our axes. We can specify the “labels” of our plot using the labs() function in a new layer. We can also add a title and subtitle in this function.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  )"
+    "text": "Specify Titles and Axes\nWe likely do not want the variable name in our dataset to be the title of our axes. We can specify the “labels” of our plot using labs() in a new layer. We can also add a title and subtitle in this function.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  )"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#clean-titles-and-axes",
     "href": "presentations/DataScience/visualization.html#clean-titles-and-axes",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Clean titles and axes",
     "text": "Clean titles and axes"
   },
   {
+    "objectID": "presentations/DataScience/visualization.html#setting-plot-as-a-function",
+    "href": "presentations/DataScience/visualization.html#setting-plot-as-a-function",
+    "title": "Data Visualization",
+    "section": "Setting plot as a function",
+    "text": "Setting plot as a function\nOnce you are satisfied with the content of your figure, you can save it as a function. This allows you to quickly call and reproduce the figure.\n\nmy.plot &lt;- ggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  )"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#my.plot",
+    "href": "presentations/DataScience/visualization.html#my.plot",
+    "title": "Data Visualization",
+    "section": "my.plot",
+    "text": "my.plot\n\nmy.plot"
+  },
+  {
     "objectID": "presentations/DataScience/visualization.html#theme-component",
     "href": "presentations/DataScience/visualization.html#theme-component",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Theme Component",
-    "text": "Theme Component\nOptional component: controls visuals of the plot that are not controlled by the data - Used to specify look and feel of your plot beyond ggplot default - Many options, from changing locations of titles and legends to changing the background color\nBuilt-in themes: theme_*() functions\n\n\n\n\n\n\n\ntheme_*()\nDescription\n\n\n\n\ntheme_grey()\nDefault theme: light grey background with white gridlines\n\n\ntheme_bw()\nBlack and white theme with white background and gridlines\n\n\ntheme_minimal()\nMinimalist: white background and no gridlines\n\n\ntheme_classic()\nClassic R: white background with solid axes and no gridlines\n\n\ntheme_void()\nEmpty theme: removes all backgrounds, axes, gridlines and labels\n\n\n\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  ) +\n  theme_minimal()"
+    "text": "Theme Component\nOptional component: controls visuals of the plot that are not controlled by the data\n\nUsed to specify look and feel of your plot beyond ggplot default\nMany options, from changing locations of titles and legends to changing the background color\n\nBuilt-in themes: theme_*() functions\n\n\n\n\n\n\n\ntheme_*()\nDescription\n\n\n\n\ntheme_grey()\nDefault theme: light grey background with white gridlines\n\n\ntheme_bw()\nBlack and white theme with white background and gridlines\n\n\ntheme_minimal()\nMinimalist: white background and grey gridlines\n\n\ntheme_classic()\nClassic R: white background with solid axes and no gridlines\n\n\ntheme_void()\nEmpty theme: removes all backgrounds, axes, gridlines and labels\n\n\n\n\nmy.plot +\n  theme_minimal()"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#theme_minimal",
     "href": "presentations/DataScience/visualization.html#theme_minimal",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "theme_minimal()",
     "text": "theme_minimal()"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#manually-modifying-theme",
     "href": "presentations/DataScience/visualization.html#manually-modifying-theme",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Manually modifying theme",
-    "text": "Manually modifying theme\n\ntheme() allows you to manually adjust your theme based your preferences\n\nFor example, you can adjust the locations of the title, subtitle, and legend\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5), # hor. adjust title to center\n    plot.subtitle = element_text(hjust = 0.5), # hor. adjust subtitle to center\n    legend.position = c(0.85, 0.2) # x, y from bottom-left corner on scale 0-1\n  )"
+    "text": "Manually modifying theme\ntheme() allows you to manually adjust your theme based your preferences. For example, you can adjust the locations of the title, subtitle, and legend.\n\nmy.plot +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5), # hor. adjust title to center\n    plot.subtitle = element_text(hjust = 0.5), # hor. adjust subtitle to center\n    legend.position = c(0.85, 0.2) # x, y from bottom-left corner on scale 0-1\n  )"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#manually-adjust-text-location",
     "href": "presentations/DataScience/visualization.html#manually-adjust-text-location",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Manually adjust text location",
     "text": "Manually adjust text location"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#remove-gridlines",
     "href": "presentations/DataScience/visualization.html#remove-gridlines",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Remove gridlines",
-    "text": "Remove gridlines\nThe function element_blank() removes an element entirely. Setting panel.grid.major and panel.grid.minor to element_blank() will remove them from your figure.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5),\n    plot.subtitle = element_text(hjust = 0.5),\n    legend.position = c(0.85, 0.2),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank()\n  )"
+    "text": "Remove gridlines\nThe function element_blank() removes an element entirely. Setting panel.grid.major and panel.grid.minor to element_blank() will remove them from your figure.\n\nmy.plot +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5),\n    plot.subtitle = element_text(hjust = 0.5),\n    legend.position = c(0.85, 0.2),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank()\n  )"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#blank-gridlines",
     "href": "presentations/DataScience/visualization.html#blank-gridlines",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Blank gridlines",
     "text": "Blank gridlines"
   },
   {
-    "objectID": "presentations/DataScience/visualization.html#black-lines-identifying-axes",
-    "href": "presentations/DataScience/visualization.html#black-lines-identifying-axes",
-    "title": "Visualization",
-    "section": "Black lines identifying axes",
-    "text": "Black lines identifying axes\nWhat if you don’t want gridlines but still want a solid line to signify your x and y axes? You can tell ggplot to draw axes lines using axis.line = element_line().\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\") +\n  labs(\n    title = \"Body mass and flipper length\",\n    subtitle = \"Dimensions for Adelie, Chinstrap, and Gentoo Penguins\",\n    x = \"Flipper length (mm)\",\n    y = \"Body mass (g)\",\n    color = \"Species\",\n    shape = \"Species\"\n  ) +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5),\n    plot.subtitle = element_text(hjust = 0.5),\n    legend.position = c(0.85, 0.2),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank(),\n    axis.line = element_line(color = \"black\")\n  )"
+    "objectID": "presentations/DataScience/visualization.html#adding-axes",
+    "href": "presentations/DataScience/visualization.html#adding-axes",
+    "title": "Data Visualization",
+    "section": "Adding axes",
+    "text": "Adding axes\nWhat if you don’t want gridlines but still want a solid line to signify your x and y axes? You can tell ggplot to draw axes lines using axis.line = element_line()\n\nmy.plot +\n  theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5),\n    plot.subtitle = element_text(hjust = 0.5),\n    legend.position = c(0.85, 0.2),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank(),\n    axis.line = element_line(color = \"black\")\n  )"
   },
   {
-    "objectID": "presentations/DataScience/visualization.html#black-lines-for-axes",
-    "href": "presentations/DataScience/visualization.html#black-lines-for-axes",
-    "title": "Visualization",
-    "section": "Black lines for axes",
-    "text": "Black lines for axes"
+    "objectID": "presentations/DataScience/visualization.html#adding-axes-1",
+    "href": "presentations/DataScience/visualization.html#adding-axes-1",
+    "title": "Data Visualization",
+    "section": "Adding axes",
+    "text": "Adding axes"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#theme-as-a-function",
+    "href": "presentations/DataScience/visualization.html#theme-as-a-function",
+    "title": "Data Visualization",
+    "section": "Theme as a function",
+    "text": "Theme as a function\nJust like you set your graph as a function, you can also set your theme as a function. This will allow you to easily add the same theme to other graphs.\n\nmy.theme &lt;- theme_minimal() +\n  theme(\n    plot.title = element_text(hjust = 0.5),\n    plot.subtitle = element_text(hjust = 0.5),\n    legend.position = c(0.85, 0.2),\n    panel.grid.major = element_blank(),\n    panel.grid.minor = element_blank(),\n    axis.line = element_line(color = \"black\")\n  )\n\n\nmy.plot +\n  my.theme"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#facets",
     "href": "presentations/DataScience/visualization.html#facets",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Facets",
-    "text": "Facets"
+    "text": "Facets\nFacets can be used to separate small multiples or different subsets of data based on one or more variables. This is a quick and powerful way to show patterns and trends within subsets of data.\nfacet_wrap(~ species) allows us to look at the relationship between body mass and flipper length for different species in separate figures.\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point() +\n  facet_wrap(~species) +\n  labs(\n    title = \"Penguin body mass by flipper length\",\n    subtitle = \"Faceted by species\",\n    x = \"Flipper length (mm)\",\n    y = \"Body Mass (g)\"\n  )"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#facets-of-body-mass-by-slipper-length-by-species",
+    "href": "presentations/DataScience/visualization.html#facets-of-body-mass-by-slipper-length-by-species",
+    "title": "Data Visualization",
+    "section": "Facets of body mass by slipper length by species",
+    "text": "Facets of body mass by slipper length by species"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#facets-with-my.theme",
+    "href": "presentations/DataScience/visualization.html#facets-with-my.theme",
+    "title": "Data Visualization",
+    "section": "Facets with my.theme",
+    "text": "Facets with my.theme\nApply my.theme to your new figure!\n\nggplot(\n  data = penguins,\n  mapping = aes(x = flipper_length_mm, y = body_mass_g)\n) +\n  geom_point() +\n  facet_wrap(~species) +\n  labs(\n    title = \"Penguin body mass by flipper length\",\n    subtitle = \"Faceted by species\",\n    x = \"Flipper length (mm)\",\n    y = \"Body Mass (g)\"\n  ) +\n  my.theme"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#facets-with-my.theme-1",
+    "href": "presentations/DataScience/visualization.html#facets-with-my.theme-1",
+    "title": "Data Visualization",
+    "section": "Facets with my.theme",
+    "text": "Facets with my.theme"
   },
   {
     "objectID": "presentations/DataScience/visualization.html#extensions-ggpubr",
     "href": "presentations/DataScience/visualization.html#extensions-ggpubr",
-    "title": "Visualization",
+    "title": "Data Visualization",
     "section": "Extensions: ggpubr",
-    "text": "Extensions: ggpubr"
+    "text": "Extensions: ggpubr\n\nggpubr is a package that creates publication ready plots\nRequires less manual formatting, but is still flexible to preferences\n\n\n# Install and load ggpubr package\ninstall.packages(\"ggpubr\")\nlibrary(ggpubr)\n\n# Density plot\nggdensity(\n  penguins,\n  x = \"body_mass_g\",\n  add = \"mean\",\n  color = \"species\",\n  fill = \"species\"\n)\n\n# Boxplot\nggboxplot(\n  penguins,\n  x = \"flipper_length_mm\",\n  y = \"body_mass_g\",\n  add = \"jitter\",\n  color = \"species\"\n)\n\n# Lollipop chart\nggdotchart(\n  penguins,\n  x = \"flipper_length_mm\",\n  y = \"body_mass_g\",\n  color = \"species\",\n  sorting = \"ascending\", # sorts data in ascending order\n  add = \"segments\", # draws lines from y=0 to data point\n  ggtheme = theme_pubr()\n)"
   },
   {
-    "objectID": "presentations/DataScience/visualization.html#next-steps",
-    "href": "presentations/DataScience/visualization.html#next-steps",
-    "title": "Visualization",
-    "section": "Next steps",
-    "text": "Next steps\n\nDevlop instructions for individual practice time: Bring back geometrical object layer (geom_) table layer\n\nHave them create a different type of plot (ie, not scatterplot) with penguins\n~30 minutes of independent work time, Ashlyn/Brian/Julianne/others available for questions/help\n~10-15 minutes of share time\n\nBack up: Ashlyn will have another plot created with code that she can walk through if nobody wants to share"
+    "objectID": "presentations/DataScience/visualization.html#ggpubr-example-plots",
+    "href": "presentations/DataScience/visualization.html#ggpubr-example-plots",
+    "title": "Data Visualization",
+    "section": "ggpubr example plots",
+    "text": "ggpubr example plots\n\nComplete description and additional plots: rpkgs.datanovia.com/ggpubr/"
+  },
+  {
+    "objectID": "presentations/DataScience/visualization.html#ggplot2-hands-on-practice",
+    "href": "presentations/DataScience/visualization.html#ggplot2-hands-on-practice",
+    "title": "Data Visualization",
+    "section": "ggplot2 Hands-On Practice",
+    "text": "ggplot2 Hands-On Practice\n\nWork through the activity for your level — and continue to the next if you finish early!\n\nOpen visualization_activities.qmd in RStudio to get started\n\n\n\nLevel\nGroup\nActivity\n\n\n\n\n🟢 Beginner\nActivity 1\nFill in the blanks\n\n\n🟡 Intermediate\nActivity 2\nUpdate the facet plots\n\n\n🔴 Advanced\nActivity 3\nCreate figure using new dataset\n\n\n\n\nFinished early? Try the bonus question or move to the next level!"
   },
   {
     "objectID": "presentations/DataScience/communicate.html#instructor-notes",
@@ -1306,7 +1355,7 @@
     "href": "attendees.html",
     "title": "2026 Attendees",
     "section": "",
-    "text": "Jackie Adedokun\nJackie is a Research Specialist with the Department of Psychiatry at the University of Pittsburgh.\n\n\nAbass Babatunde\nAbassis a Postdoctoral Fellow with the Institute for the Advancement of Community Health at Furman University.\n\n\nAshlyn Barry\nAshlyn is a Graduate Student with the Department of Kinesiology at the University of Wisconsin - Madison.\n\n\nMorgan Brucks\nMorgan is a Senior Research Associate with the Department of Population Health at the University of Kansas Medical Center.\n\n\nWasayef Bsharat\nWasayef is a Graduate Student with the Department of Clinical Psychology at Montclair State University.\n\n\nJulianne Clina\nJulianne is a Postdoctoral Fellow with the Division of Physical Activity and Weight Mangagement in the Department of Internal Medicine at the University of Kansas Medical Center.\n\n\nKellie Collins\nKellie is a Graduate Student in Clinical Investigation with the Department of Pediatrics at the University of Wisconsin - Madison.\n\n\nBethany Forseth\nBethany is an Assistant Professor with the Department of Physical Therapy, Rehabilitation Science, and Athletic Training at the University of Kansas Medical Center.\n\n\nSara Fortin-Miller\nSara is a Postdoctoral Fellow with the Department of Population Health at the University of Kansas Medical Center.\n\n\nElham Ghanbarian\nElham is a Postdoctoral Fellow with the Department of Neurology at the University of California, Irvine.\n\n\nRachel Hantman\nRachel is a Graduate Student with the Department of Psychology at the University of South Carolina.\n\n\nJohn Heap\nJohn is a Graduate Student with the School of Medicine at the University of Kansas Medical Center.\n\n\nBrian Helsel\nBrian is an Assistant Professor with the University of Kansas Alzheimer’s Disease Research Center in the Department of Neurology at the University of Kansas Medical Center.\n\n\nRashelle Hoffman\nRashelle is an Assistant Professor with the Department of Physical Therapy at Creighton University.\n\n\nDominic Javonillo\nDominic is a Graduate Student with the Department of Neurobiology & Behavior at the University of California, Irvine.\n\n\nMelissa Jenkins\nMelissa is a Postdoctoral Fellow with the Waisman Center at the University of Wisconsin - Madison.\n\n\nSullafa Kadura\nSullafa is an Associate Professor with the Departmnet of Medicine at the University of Pittsburgh.\n\n\nJessica Keller\nJessica is a Postdoctoral Fellow with the Department of Anesthesiology at the University of Kansas Medical Center\n\n\nMason McClarnon\nMason is a research assistant with the School of Pharmacy and Health Professions at Creighton University.\n\n\nYasaman Razavi\nYasaman is an Associate Specialist with the Department of Anesthesia at the University of California San Francisco.\n\n\nSadaf Salehi\nSadaf is an Associate Researcher with the Multiple Sclerosis Research Center at the Tehran University of Medical Sciences.\n\n\nLeela Shah\nLeela is a Graduate Student with the Waisman Center at the University of Wisconsin - Madison.\n\n\nKameron Suire\nKameron is an Assistant Professor of Exercise Science with the Department of Kinesiology at Berry College.\n\n\nDavid Titus\nDavid is a Neuroscientist with the Department of Veterinary Clinical Sciences at the University of Minnesota Twin Cities.\n\n\nAinsley VanderGiesen\nAinsley is a Clinical Research Assistant with the Department of Anesthesiology at the University of Kansas Medical Center.\n\n\nElyse Vetter\nElyse is a Graduate Student with the Department of Neurology at the University of Kansas Medical Center.\n\n\nIan Weidling\nIan is a Postdoctoral Fellow with the Department of Neurology at the University of Kansas Medical Center."
+    "text": "Jackie Adedokun\nJackie is a Research Specialist with the Department of Psychiatry at the University of Pittsburgh.\n\n\nAbass Babatunde\nAbassis a Postdoctoral Fellow with the Institute for the Advancement of Community Health at Furman University.\n\n\nAshlyn Barry\nAshlyn is a Graduate Student with the Department of Kinesiology at the University of Wisconsin - Madison.\n\n\nMorgan Brucks\nMorgan is a Senior Research Associate with the Department of Population Health at the University of Kansas Medical Center.\n\n\nWasayef Bsharat\nWasayef is a Graduate Student with the Department of Clinical Psychology at Montclair State University.\n\n\nJulianne Clina\nJulianne is a Postdoctoral Fellow with the Division of Physical Activity and Weight Mangagement in the Department of Internal Medicine at the University of Kansas Medical Center.\n\n\nKellie Collins\nKellie is a Graduate Student in Clinical Investigation with the Department of Pediatrics at the University of Wisconsin - Madison.\n\n\nBethany Forseth\nBethany is an Assistant Professor with the Department of Physical Therapy, Rehabilitation Science, and Athletic Training at the University of Kansas Medical Center.\n\n\nSara Fortin-Miller\nSara is a Postdoctoral Fellow with the Department of Population Health at the University of Kansas Medical Center.\n\n\nElham Ghanbarian\nElham is a Postdoctoral Fellow with the Department of Neurology at the University of California, Irvine.\n\n\nRachel Hantman\nRachel is a Graduate Student with the Department of Psychology at the University of South Carolina.\n\n\nJohn Heap\nJohn is a Graduate Student with the School of Medicine at the University of Kansas Medical Center.\n\n\nBrian Helsel\nBrian is an Assistant Professor with the University of Kansas Alzheimer’s Disease Research Center in the Department of Neurology at the University of Kansas Medical Center.\n\n\nRashelle Hoffman\nRashelle is an Assistant Professor with the Department of Physical Therapy at Creighton University.\n\n\nDominic Javonillo\nDominic is a Graduate Student with the Department of Neurobiology & Behavior at the University of California, Irvine.\n\n\nMelissa Jenkins\nMelissa is a Postdoctoral Fellow with the Waisman Center at the University of Wisconsin - Madison.\n\n\nSullafa Kadura\nSullafa is an Associate Professor with the Departmnet of Medicine at the University of Pittsburgh.\n\n\nJessica Keller\nJessica is a Postdoctoral Fellow with the Department of Anesthesiology at the University of Kansas Medical Center\n\n\nMason McClarnon\nMason is a research assistant with the School of Pharmacy and Health Professions at Creighton University.\n\n\nYasaman Razavi\nYasaman is an Associate Specialist with the Department of Anesthesia at the University of California San Francisco.\n\n\nSadaf Salehi\nSadaf is an Associate Researcher with the Multiple Sclerosis Research Center at the Tehran University of Medical Sciences.\n\n\nLeela Shah\nLeela is a Graduate Student with the Waisman Center at the University of Wisconsin - Madison.\n\n\nKeith Smith\nKeith is a Senior Research Associate with the University of Kansas Alzheimer’s Disease Research Center in the Department of Neurology at the University of Kansas Medical Center.\n\n\nKameron Suire\nKameron is an Assistant Professor of Exercise Science with the Department of Kinesiology at Berry College.\n\n\nDavid Titus\nDavid is a Neuroscientist with the Department of Veterinary Clinical Sciences at the University of Minnesota Twin Cities.\n\n\nAinsley VanderGiesen\nAinsley is a Clinical Research Assistant with the Department of Anesthesiology at the University of Kansas Medical Center.\n\n\nElyse Vetter\nElyse is a Graduate Student with the Department of Neurology at the University of Kansas Medical Center.\n\n\nIan Weidling\nIan is a Postdoctoral Fellow with the Department of Neurology at the University of Kansas Medical Center."
   },
   {
     "objectID": "installation.html",
@@ -2272,7 +2321,7 @@
     "href": "presentations/DataScience.html",
     "title": "R for Data Science",
     "section": "",
-    "text": "Whole Game\n\n\nR for Data Science Chapters 1-8\n\n\n\n\n\n\n\n\nJun 24, 2026\n\n\nJulianne G. Clina, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nTransform\n\n\nTools to Work with Common Variable Types\n\n\n\n\n\n\n\n\nJul 1, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nVisualization\n\n\nIntroduction to ggplot2\n\n\n\n\n\n\n\n\nJul 8, 2026\n\n\nAshlyn Barry\n\n\n\n\n\nNo matching items"
+    "text": "Whole Game\n\n\nR for Data Science Chapters 1-8\n\n\n\n\n\n\n\n\nJun 24, 2026\n\n\nJulianne G. Clina, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nTransform\n\n\nTools to Work with Common Variable Types\n\n\n\n\n\n\n\n\nJul 1, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nData Visualization\n\n\nAn Introduction to ggplot2\n\n\n\n\n\n\n\n\nJul 8, 2026\n\n\nAshlyn Barry\n\n\n\n\n\n\n\n\n\n\n\n\nData Import\n\n\nGetting data into R\n\n\n\n\n\n\n\n\nJul 15, 2026\n\n\nIan Weidling\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "presentations/DataScience/transform.html#logical-vectors",
@@ -2660,6 +2709,13 @@
     "text": "Today’s Plan\n\n\nWorkflow basics\n\nNaming, style, scripts, projects\nThese habits show up in every lesson going forward, so we won’t repeat them\n\n\nThe four tools\n\nImport data → readr\nTidy data → tidyr\nTransform data → dplyr\nVisualize data → ggplot2\n\n\n\nWe’re covering this in import → tidy → transform → visualize order today (rather than the book’s order) because that’s the order you actually touch a new dataset."
   },
   {
+    "objectID": "presentations/DataScience/whole-game.html#the-whole-game-explained-like-a-kitchen",
+    "href": "presentations/DataScience/whole-game.html#the-whole-game-explained-like-a-kitchen",
+    "title": "Whole Game",
+    "section": "The Whole Game, Explained Like a Kitchen",
+    "text": "The Whole Game, Explained Like a Kitchen\n\nThink of data science like cooking a meal:\n\n\n\n\nData science step\nKitchen analogy\n\n\n\n\nImport\nGrocery shopping\n\n\nTidy\nWashing & chopping ingredients\n\n\nTransform\nCooking & seasoning\n\n\nVisualize\nPlating the dish\n\n\nCommunicate\nServing it to others\n\n\n\nYou can’t plate raw ingredients, and you shouldn’t cook before you chop."
+  },
+  {
     "objectID": "presentations/DataScience/whole-game.html#naming-things-and-writing-code",
     "href": "presentations/DataScience/whole-game.html#naming-things-and-writing-code",
     "title": "Whole Game",
@@ -2702,6 +2758,13 @@
     "text": "dplyr: One Grammar for Rows, Columns, and Groups\nEvery dplyr verb: (1) takes a data frame first, (2) refers to columns by bare name, (3) returns a new data frame.\n\n\n\n\n\n\n\nActs on\nVerbs\n\n\n\n\nRows\nfilter(), arrange(), distinct()\n\n\nColumns\nmutate(), select(), rename(), relocate()\n\n\nGroups\ngroup_by(), summarize(), slice_max() / slice_min()\n\n\n\nBefore — flights, untouched:\n\nhead(flights)\n\n# A tibble: 6 × 19\n   year month   day dep_time sched_dep_time dep_delay arr_time sched_arr_time\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt;          &lt;int&gt;     &lt;dbl&gt;    &lt;int&gt;          &lt;int&gt;\n1  2013     1     1      517            515         2      830            819\n2  2013     1     1      533            529         4      850            830\n3  2013     1     1      542            540         2      923            850\n4  2013     1     1      544            545        -1     1004           1022\n5  2013     1     1      554            600        -6      812            837\n6  2013     1     1      554            558        -4      740            728\n# ℹ 11 more variables: arr_delay &lt;dbl&gt;, carrier &lt;chr&gt;, flight &lt;int&gt;,\n#   tailnum &lt;chr&gt;, origin &lt;chr&gt;, dest &lt;chr&gt;, air_time &lt;dbl&gt;, distance &lt;dbl&gt;,\n#   hour &lt;dbl&gt;, minute &lt;dbl&gt;, time_hour &lt;dttm&gt;"
   },
   {
+    "objectID": "presentations/DataScience/whole-game.html#dplyr-in-action-before-after",
+    "href": "presentations/DataScience/whole-game.html#dplyr-in-action-before-after",
+    "title": "Whole Game",
+    "section": "dplyr in Action: Before → After",
+    "text": "dplyr in Action: Before → After\nThe pipeline:\n\nfast_iah &lt;- flights |&gt;\n  filter(dest == \"IAH\") %&gt;%\n  mutate(speed = distance / air_time * 60) %&gt;%\n  select(year:day, dep_time, carrier, speed) %&gt;%\n  arrange(desc(speed))\n\nAfter — filtered to IAH, new speed column, fewer columns, sorted:\n\nhead(fast_iah)\n\n# A tibble: 6 × 6\n   year month   day dep_time carrier speed\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;\n1  2013     7     9      707 UA       522.\n2  2013     8    27     1850 UA       521.\n3  2013     8    28      902 UA       519.\n4  2013     8    28     2122 UA       519.\n5  2013     6    11     1628 UA       515.\n6  2013     8    27     1017 UA       515.\n\n\n\nRead %&gt;% or |&gt; as “then.” This pipeline reads: take flights, then filter, then mutate, then select, then arrange."
+  },
+  {
     "objectID": "presentations/DataScience/whole-game.html#grouped-summaries",
     "href": "presentations/DataScience/whole-game.html#grouped-summaries",
     "title": "Whole Game",
@@ -2714,6 +2777,34 @@
     "title": "Whole Game",
     "section": "ggplot2: The Grammar of Graphics",
     "text": "ggplot2: The Grammar of Graphics\n\n“The simple graph has brought more information to the data analyst’s mind than any other device.” — John Tukey\n\nEvery plot: data + mapping (aes()) + geom.\n\nLet’s build one up layer by layer so you can see exactly what each piece adds."
+  },
+  {
+    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-14",
+    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-14",
+    "title": "Whole Game",
+    "section": "Building a Plot, Layer by Layer (1/4)",
+    "text": "Building a Plot, Layer by Layer (1/4)\nStart with data + mapping — aes() just sets up the coordinate system, no geometry yet:\n\nlibrary(palmerpenguins)\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))\n\n\n\nNothing plots yet — ggplot() + aes() only declares what goes where, not how to draw it."
+  },
+  {
+    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-24",
+    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-24",
+    "title": "Whole Game",
+    "section": "Building a Plot, Layer by Layer (2/4)",
+    "text": "Building a Plot, Layer by Layer (2/4)\nAdd a geom — now there’s something to look at:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point()"
+  },
+  {
+    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-34",
+    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-34",
+    "title": "Whole Game",
+    "section": "Building a Plot, Layer by Layer (3/4)",
+    "text": "Building a Plot, Layer by Layer (3/4)\nMap species to color and shape — a third variable, no new geom required:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point(aes(color = species, shape = species))"
+  },
+  {
+    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-44",
+    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-44",
+    "title": "Whole Game",
+    "section": "Building a Plot, Layer by Layer (4/4)",
+    "text": "Building a Plot, Layer by Layer (4/4)\nAdd a second geom — geom_smooth() layers a trend line on top:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\")\n\n\n\nEvery plot is data + mapping (aes()) + one or more geoms — each + stacks another layer on the same coordinate system."
   },
   {
     "objectID": "presentations/DataScience/whole-game.html#matching-plot-type-to-question",
@@ -2751,20 +2842,6 @@
     "text": "Summary\n\nThe four tools: readr (import) → tidyr (tidy) → dplyr (transform) → ggplot2 (visualize)\n\nThe habits that make it sustainable: descriptive names, consistent style, RStudio projects with relative paths, restarting R often, and knowing how to ask for help.\nWe’ll go much deeper on each of these tools in upcoming lessons — today was about seeing how they fit together."
   },
   {
-    "objectID": "presentations/SpecialTopics.html",
-    "href": "presentations/SpecialTopics.html",
-    "title": "Advanced R Special Topics",
-    "section": "",
-    "text": "Functional Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nObject Oriented Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 14, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nMeta-Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 21, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nMeasuring and Improving Performance\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 28, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "presentations/DataScience/whole-game.html#the-whole-game-explained-like-a-kitchen",
-    "href": "presentations/DataScience/whole-game.html#the-whole-game-explained-like-a-kitchen",
-    "title": "Whole Game",
-    "section": "The Whole Game, Explained Like a Kitchen",
-    "text": "The Whole Game, Explained Like a Kitchen\n\nThink of data science like cooking a meal:\n\n\n\n\nData science step\nKitchen analogy\n\n\n\n\nImport\nGrocery shopping\n\n\nTidy\nWashing & chopping ingredients\n\n\nTransform\nCooking & seasoning\n\n\nVisualize\nPlating the dish\n\n\nCommunicate\nServing it to others\n\n\n\nYou can’t plate raw ingredients, and you shouldn’t cook before you chop."
-  },
-  {
     "objectID": "presentations/DataScience/whole-game.html#in-class-activity-your-first-github-push",
     "href": "presentations/DataScience/whole-game.html#in-class-activity-your-first-github-push",
     "title": "Whole Game",
@@ -2800,13 +2877,6 @@
     "text": "Step 4: Create a Simple Quarto Document\nInside your code/ folder:\nCreate a file called: whole-game.qmd\nPaste this: as the YAML\n---\ntitle: \"The Whole Game Practice\"\nformat: html\n---\nCreate an R Code Chunk and enter:\n\n# Hello R-LAB\n\nmessage(\"My first GitHub push worked!\")\n\nx &lt;- 1:10\nmean(x)\n\nAnd Save the file!"
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#paste-this-as-the-yaml",
-    "href": "presentations/DataScience/whole-game.html#paste-this-as-the-yaml",
-    "title": "Whole Game",
-    "section": "Paste this: as the YAML",
-    "text": "Paste this: as the YAML\ntitle: “The Whole Game Practice” format: html — Create an R Code Chunk and enter:\n\n\n[1] 5.5\n\n\nAnd Save the file!"
-  },
-  {
     "objectID": "presentations/DataScience/whole-game.html#step-5-render-with-quarto-locally",
     "href": "presentations/DataScience/whole-game.html#step-5-render-with-quarto-locally",
     "title": "Whole Game",
@@ -2835,38 +2905,563 @@
     "text": "Step 8: Create a Pull Request\nThis will allow you to merge your work into the class repository. From your fork on GitHub\n\nClick Contribute\nClick Open pull request\nConfirm the information is correct\nClick Create pull request\nAdd a title and description with a clear message\n+ Title: Whole Game Practice (Your Name)\n+ Description: - added whole-game.qmd"
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#dplyr-in-action-before-after",
-    "href": "presentations/DataScience/whole-game.html#dplyr-in-action-before-after",
-    "title": "Whole Game",
-    "section": "dplyr in Action: Before → After",
-    "text": "dplyr in Action: Before → After\nThe pipeline:\n\nfast_iah &lt;- flights |&gt;\n  filter(dest == \"IAH\") %&gt;%\n  mutate(speed = distance / air_time * 60) %&gt;%\n  select(year:day, dep_time, carrier, speed) %&gt;%\n  arrange(desc(speed))\n\nAfter — filtered to IAH, new speed column, fewer columns, sorted:\n\nhead(fast_iah)\n\n# A tibble: 6 × 6\n   year month   day dep_time carrier speed\n  &lt;int&gt; &lt;int&gt; &lt;int&gt;    &lt;int&gt; &lt;chr&gt;   &lt;dbl&gt;\n1  2013     7     9      707 UA       522.\n2  2013     8    27     1850 UA       521.\n3  2013     8    28      902 UA       519.\n4  2013     8    28     2122 UA       519.\n5  2013     6    11     1628 UA       515.\n6  2013     8    27     1017 UA       515.\n\n\n\nRead %&gt;% or |&gt; as “then.” This pipeline reads: take flights, then filter, then mutate, then select, then arrange."
+    "objectID": "presentations/SpecialTopics.html",
+    "href": "presentations/SpecialTopics.html",
+    "title": "Advanced R Special Topics",
+    "section": "",
+    "text": "Functional Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 7, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nObject Oriented Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 14, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nMeta-Programming\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 21, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\n\n\n\n\n\n\n\nMeasuring and Improving Performance\n\n\nApplying R to Lifestyle and Brain Health Research\n\n\n\n\n\n\n\n\nOct 28, 2026\n\n\nBrian C. Helsel, PhD\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-14",
-    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-14",
-    "title": "Whole Game",
-    "section": "Building a Plot, Layer by Layer (1/4)",
-    "text": "Building a Plot, Layer by Layer (1/4)\nStart with data + mapping — aes() just sets up the coordinate system, no geometry yet:\n\nlibrary(palmerpenguins)\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g))\n\n\n\nNothing plots yet — ggplot() + aes() only declares what goes where, not how to draw it."
+    "objectID": "presentations/DataScience/data-import.html#data-import",
+    "href": "presentations/DataScience/data-import.html#data-import",
+    "title": "Data Import",
+    "section": "Data import",
+    "text": "Data import\n\nData import is the bridge between real-world data and analysis-ready R objects.\nToday we will learn how to bring data into R from files, spreadsheets, databases, larger-than-memory datasets, nested data, and web pages.\n\n\nMain idea: before you can tidy, transform, visualize, or model data, you need to import it correctly."
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-24",
-    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-24",
-    "title": "Whole Game",
-    "section": "Building a Plot, Layer by Layer (2/4)",
-    "text": "Building a Plot, Layer by Layer (2/4)\nAdd a geom — now there’s something to look at:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point()"
+    "objectID": "presentations/DataScience/data-import.html#todays-goals",
+    "href": "presentations/DataScience/data-import.html#todays-goals",
+    "title": "Data Import",
+    "section": "Today’s goals",
+    "text": "Today’s goals\nBy the end of today, you should be able to:\n\nChoose the right import function for common data sources\nInspect imported data for column types, missing values, and parsing problems\nImport from CSV, TSV, Excel, databases, Parquet/Arrow, JSON, and HTML tables\nRecognize when data is rectangular, hierarchical, or web-based\nPractice debugging import problems independently"
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-34",
-    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-34",
-    "title": "Whole Game",
-    "section": "Building a Plot, Layer by Layer (3/4)",
-    "text": "Building a Plot, Layer by Layer (3/4)\nMap species to color and shape — a third variable, no new geom required:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point(aes(color = species, shape = species))"
+    "objectID": "presentations/DataScience/data-import.html#class-plan-demo-coding-break-cycles",
+    "href": "presentations/DataScience/data-import.html#class-plan-demo-coding-break-cycles",
+    "title": "Data Import",
+    "section": "Class plan: demo → coding break cycles",
+    "text": "Class plan: demo → coding break cycles\nToday is organized as six short teaching sections, each followed immediately by a small coding break.\n\n\n\n\n\n\n\n\n\nCycle\nSection\nDemo focus\nCoding break\n\n\n\n\n1\nText files and readr\nCSV/TSV import, missing values, parsing problems\nImport and diagnose a messy CSV\n\n\n2\nSpreadsheets\nSheets, ranges, skipped rows, clean names\nImport the true data rectangle from Excel\n\n\n3\nDatabases\nLazy tables, SQL translation, collect()\nQuery a SQLite table with dplyr\n\n\n4\nArrow and Parquet\nColumnar files and larger-than-memory workflows\nWrite, read, and compare Parquet vs CSV\n\n\n5\nHierarchical data and rectangling\nLists, list-columns, unnest_*(), JSON\nRectangle nested student records\n\n\n6\nWeb scraping\nHTML, selectors, tables, responsible scraping\nExtract and clean an HTML table\n\n\n\n\nTeaching pattern: learn a concept → see a short demo → immediately practice it."
   },
   {
-    "objectID": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-44",
-    "href": "presentations/DataScience/whole-game.html#building-a-plot-layer-by-layer-44",
-    "title": "Whole Game",
-    "section": "Building a Plot, Layer by Layer (4/4)",
-    "text": "Building a Plot, Layer by Layer (4/4)\nAdd a second geom — geom_smooth() layers a trend line on top:\n\nggplot(penguins, aes(x = flipper_length_mm, y = body_mass_g)) +\n  geom_point(aes(color = species, shape = species)) +\n  geom_smooth(method = \"lm\")\n\n\n\nEvery plot is data + mapping (aes()) + one or more geoms — each + stacks another layer on the same coordinate system."
+    "objectID": "presentations/DataScience/data-import.html#coding-break-roadmap",
+    "href": "presentations/DataScience/data-import.html#coding-break-roadmap",
+    "title": "Data Import",
+    "section": "Coding break roadmap",
+    "text": "Coding break roadmap\nEach break is designed to be small enough to finish during class.\n\n\n\n\n\n\n\n\nBreak\nPractical example\nMain functions\n\n\n\n\n1\nMessy inline student CSV\nread_csv(), na, col_types, problems()\n\n\n2\nBuilt-in readxl deaths workbook\nread_excel(), range, skip, excel_sheets()\n\n\n3\nIn-memory SQLite copy of mpg\nDBI, tbl(), show_query(), collect()\n\n\n4\nLocal mpg.parquet file\nwrite_parquet(), read_parquet(), open_dataset()\n\n\n5\nNested student records\nstr(), hoist(), unnest_wider(), unnest_longer()\n\n\n6\nrvest Star Wars HTML page\nread_html(), html_elements(), html_table()\n\n\n\n\nThe final practice block is optional. The main practice is now embedded throughout the session."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#how-the-coding-breaks-work",
+    "href": "presentations/DataScience/data-import.html#how-the-coding-breaks-work",
+    "title": "Data Import",
+    "section": "How the coding breaks work",
+    "text": "How the coding breaks work\nAt each coding break:\n\nRun the starter code exactly as written\nComplete the Your turn tasks\nCompare your output to the Expected result\nTry the Stretch task if you finish early\n\n\nThe goal is not speed. The goal is to practice the import workflow while the relevant functions are still fresh."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#where-import-fits-in-data-science",
+    "href": "presentations/DataScience/data-import.html#where-import-fits-in-data-science",
+    "title": "Data Import",
+    "section": "Where import fits in data science",
+    "text": "Where import fits in data science\nImport → Tidy → Transform → Visualize → Model → Communicate\n\nToday focuses on Import.\nLater steps depend on whether we imported the data correctly."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#what-can-go-wrong-during-import",
+    "href": "presentations/DataScience/data-import.html#what-can-go-wrong-during-import",
+    "title": "Data Import",
+    "section": "What can go wrong during import?",
+    "text": "What can go wrong during import?\n\nImport problems are usually data problems, not R problems.\n\nCommon issues:\n\nWrong delimiter: comma, tab, pipe, semicolon\nMissing values encoded as \".\", \"N/A\", \"Unknown\", or blank cells\nNumbers stored as text\nDates stored in inconsistent formats\nMultiple tables in one spreadsheet\nNested lists inside JSON files\nWeb pages that were designed for humans, not R"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#packages-for-todays-examples",
+    "href": "presentations/DataScience/data-import.html#packages-for-todays-examples",
+    "title": "Data Import",
+    "section": "Packages for today’s examples",
+    "text": "Packages for today’s examples\n\ninstall.packages(c(\n  \"tidyverse\",\n  \"readxl\",\n  \"janitor\",\n  \"DBI\",\n  \"dbplyr\",\n  \"duckdb\",\n  \"arrow\",\n  \"jsonlite\",\n  \"rvest\"\n))\n\n\nlibrary(tidyverse)\nlibrary(readxl)\nlibrary(janitor)\nlibrary(DBI)\nlibrary(dbplyr)\nlibrary(duckdb)\nlibrary(arrow)\nlibrary(jsonlite)\nlibrary(rvest)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#project-oriented-workflow",
+    "href": "presentations/DataScience/data-import.html#project-oriented-workflow",
+    "title": "Data Import",
+    "section": "Project-oriented workflow",
+    "text": "Project-oriented workflow\n\nUse an RStudio/Positron project and relative paths whenever possible.\n\nInstead of this:\n\nread_csv(\"C:/Users/myname/Desktop/class/data/students.csv\")\n\nPrefer this:\n\nread_csv(\"data/students.csv\")\n\n\nRelative paths make your code easier to share and less likely to break on another computer."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#match-the-tool-to-the-data-source",
+    "href": "presentations/DataScience/data-import.html#match-the-tool-to-the-data-source",
+    "title": "Data Import",
+    "section": "Match the tool to the data source",
+    "text": "Match the tool to the data source\n\n\n\n\n\n\n\n\n\nData source\nCommon extension\nPackage\nMain function\n\n\n\n\nCSV file\n.csv\nreadr\nread_csv()\n\n\nTab-delimited file\n.tsv, .txt\nreadr\nread_tsv()\n\n\nExcel workbook\n.xlsx, .xls\nreadxl\nread_excel()\n\n\nDatabase table\ndatabase\nDBI/dbplyr\ntbl()\n\n\nParquet / Arrow\n.parquet\narrow\nread_parquet(), open_dataset()\n\n\nJSON\n.json\njsonlite/tidyr\nfromJSON(), unnest_*()\n\n\nWeb page\n.html\nrvest\nread_html()"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#csv-files",
+    "href": "presentations/DataScience/data-import.html#csv-files",
+    "title": "Data Import",
+    "section": "CSV files",
+    "text": "CSV files\n\nCSV stands for comma-separated values. It is one of the most common data formats.\n\n\nstudents &lt;- read_csv(\"data/students.csv\")\n\nThe result is usually a tibble.\n\nstudents"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#inspect-after-import",
+    "href": "presentations/DataScience/data-import.html#inspect-after-import",
+    "title": "Data Import",
+    "section": "Inspect after import",
+    "text": "Inspect after import\nNever stop at read_csv().\nCheck what R actually imported.\n\nglimpse(students)\nhead(students)\n\nOther useful checks:\n\nnrow(students)\nncol(students)\nnames(students)\nsummary(students)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#delimiters",
+    "href": "presentations/DataScience/data-import.html#delimiters",
+    "title": "Data Import",
+    "section": "Delimiters",
+    "text": "Delimiters\nA delimiter is the character that separates columns.\n\n\n\nFile type\nFunction\nSeparator\n\n\n\n\nCSV\nread_csv()\ncomma\n\n\nTSV\nread_tsv()\ntab\n\n\npipe-delimited\nread_delim()\n\\|\n\n\nsemicolon-delimited\nread_delim()\n;\n\n\n\n\ngrades &lt;- read_tsv(\"data/grades.tsv\")\n\n\nlabs &lt;- read_delim(\"data/labs.txt\", delim = \"|\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#missing-values",
+    "href": "presentations/DataScience/data-import.html#missing-values",
+    "title": "Data Import",
+    "section": "Missing values",
+    "text": "Missing values\nReal datasets often use multiple codes for missing values.\nNA\nN/A\n.\nUnknown\nnot reported\nblank cells\nTell readr what should become NA:\n\nstudents &lt;- read_csv(\n  \"data/students.csv\",\n  na = c(\"\", \"NA\", \"N/A\", \".\", \"Unknown\")\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#column-names",
+    "href": "presentations/DataScience/data-import.html#column-names",
+    "title": "Data Import",
+    "section": "Column names",
+    "text": "Column names\nIf a file has no column names:\n\nread_csv(\n  \"data/no_header.csv\",\n  col_names = FALSE\n)\n\nAdd names during import:\n\nread_csv(\n  \"data/no_header.csv\",\n  col_names = c(\"id\", \"condition\", \"response\")\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#skipping-metadata-rows",
+    "href": "presentations/DataScience/data-import.html#skipping-metadata-rows",
+    "title": "Data Import",
+    "section": "Skipping metadata rows",
+    "text": "Skipping metadata rows\nSometimes files contain notes before the table begins.\nStudy: R-LAB practice dataset\nCreated by: course staff\nDo not edit manually\nid,name,group,score\n1,Ana,A,88\n2,Ben,B,91\nUse skip:\n\nread_csv(\"data/metadata_example.csv\", skip = 3)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#comments-inside-files",
+    "href": "presentations/DataScience/data-import.html#comments-inside-files",
+    "title": "Data Import",
+    "section": "Comments inside files",
+    "text": "Comments inside files\nSome files include comment lines that should be ignored.\n# data collected during class exercise\n# missing values coded as .\nid,name,score\n1,Ana,88\n2,Ben,.\nUse comment:\n\nread_csv(\"data/comment_example.csv\", comment = \"#\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#column-type-guessing",
+    "href": "presentations/DataScience/data-import.html#column-type-guessing",
+    "title": "Data Import",
+    "section": "Column type guessing",
+    "text": "Column type guessing\nWhen you import data, readr guesses column types.\nCommon column types:\n\n\n\nType\nExample\n\n\n\n\ncharacter\n\"Control\"\n\n\ndouble\n3.14\n\n\ninteger\n7\n\n\nlogical\nTRUE / FALSE\n\n\ndate\n2026-07-08\n\n\ndatetime\n2026-07-08 13:30:00"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#see-the-column-specification",
+    "href": "presentations/DataScience/data-import.html#see-the-column-specification",
+    "title": "Data Import",
+    "section": "See the column specification",
+    "text": "See the column specification\n\nstudents &lt;- read_csv(\"data/students.csv\")\nspec(students)\n\n\nIf R guessed incorrectly, tell R the correct type using col_types."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#specify-column-types",
+    "href": "presentations/DataScience/data-import.html#specify-column-types",
+    "title": "Data Import",
+    "section": "Specify column types",
+    "text": "Specify column types\n\nstudents &lt;- read_csv(\n  \"data/students.csv\",\n  col_types = cols(\n    id = col_character(),\n    name = col_character(),\n    age = col_double(),\n    enrolled = col_logical(),\n    start_date = col_date()\n  )\n)\n\nWhy force id to character?\n\nBecause ID numbers are labels, not values to calculate with."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#parsing-problems",
+    "href": "presentations/DataScience/data-import.html#parsing-problems",
+    "title": "Data Import",
+    "section": "Parsing problems",
+    "text": "Parsing problems\nreadr records problems during import.\n\nchallenge &lt;- read_csv(readr_example(\"challenge.csv\"))\nproblems(challenge)\n\nThen fix the import:\n\nchallenge &lt;- read_csv(\n  readr_example(\"challenge.csv\"),\n  col_types = cols(\n    x = col_double(),\n    y = col_date()\n  )\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#locale-numbers-and-dates",
+    "href": "presentations/DataScience/data-import.html#locale-numbers-and-dates",
+    "title": "Data Import",
+    "section": "Locale: numbers and dates",
+    "text": "Locale: numbers and dates\nData may use different conventions across countries.\n1,234.56   # common in the U.S.\n1.234,56   # common in parts of Europe\nUse locale():\n\nread_csv(\n  \"data/euro_numbers.csv\",\n  locale = locale(decimal_mark = \",\", grouping_mark = \".\")\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#reading-from-a-url",
+    "href": "presentations/DataScience/data-import.html#reading-from-a-url",
+    "title": "Data Import",
+    "section": "Reading from a URL",
+    "text": "Reading from a URL\nMany import functions can read directly from the internet.\n\npenguins &lt;- read_csv(\n  \"https://raw.githubusercontent.com/allisonhorst/palmerpenguins/master/inst/extdata/penguins.csv\"\n)\n\n\nFor reproducible research, consider downloading important datasets and saving a dated copy in your project."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#writing-files",
+    "href": "presentations/DataScience/data-import.html#writing-files",
+    "title": "Data Import",
+    "section": "Writing files",
+    "text": "Writing files\nImport is often paired with export.\n\nwrite_csv(students, \"data/clean_students.csv\")\n\nFor R-specific objects, use RDS:\n\nwrite_rds(students, \"data/clean_students.rds\")\nstudents &lt;- read_rds(\"data/clean_students.rds\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-1-of-6-text-files-and-readr",
+    "href": "presentations/DataScience/data-import.html#coding-break-1-of-6-text-files-and-readr",
+    "title": "Data Import",
+    "section": "Coding Break 1 of 6: Text files and readr",
+    "text": "Coding Break 1 of 6: Text files and readr\n\nPractice example: import a small messy CSV and diagnose what R guessed.\n\nTime: 8 minutes\nReference: R4DS data import workflow: import → inspect → diagnose → re-import with better arguments\n\nlibrary(tidyverse)\n\nstudents &lt;- read_csv(\n  \"id,name,score,passed\n001,Ana,88,yes\n002,Ben,.,no\n003,Clara,91,yes\n004,Diego,not collected,no\",\n  na = c(\"\", \".\", \"not collected\"),\n  col_types = cols(id = col_character())\n)\n\nglimpse(students)\nspec(students)\nproblems(students)\n\nYour turn:\n\nConfirm id stayed character instead of becoming numeric\nConfirm . and not collected became NA\nRe-run the import after removing one value from na = and inspect what changes\nUse count(passed) to check whether the yes/no column imported as expected\n\nExpected result: 4 rows, 4 columns, id is character, and the missing scores are NA.\nStretch: import the same text using read_delim() and specify delim = \",\"."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#why-spreadsheets-are-different",
+    "href": "presentations/DataScience/data-import.html#why-spreadsheets-are-different",
+    "title": "Data Import",
+    "section": "Why spreadsheets are different",
+    "text": "Why spreadsheets are different\n\nSpreadsheets are designed for humans. Data frames are designed for analysis.\n\nSpreadsheet challenges:\n\nMultiple sheets\nTitles and notes above the data\nMerged cells\nColors and formatting that encode meaning\nMultiple tables on one sheet\nInconsistent column names\nHidden rows or columns"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#readxl-basics",
+    "href": "presentations/DataScience/data-import.html#readxl-basics",
+    "title": "Data Import",
+    "section": "readxl basics",
+    "text": "readxl basics\n\nlibrary(readxl)\n\nexcel_sheets(\"data/survey.xlsx\")\n\nRead the first sheet:\n\nsurvey &lt;- read_excel(\"data/survey.xlsx\")\n\nRead a specific sheet:\n\nsurvey_2026 &lt;- read_excel(\"data/survey.xlsx\", sheet = \"2026\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#spreadsheet-ranges",
+    "href": "presentations/DataScience/data-import.html#spreadsheet-ranges",
+    "title": "Data Import",
+    "section": "Spreadsheet ranges",
+    "text": "Spreadsheet ranges\nIf the data starts below a title or only occupies part of the sheet:\n\nread_excel(\n  \"data/survey.xlsx\",\n  range = \"B4:H35\"\n)\n\nYou can also use skip:\n\nread_excel(\n  \"data/survey.xlsx\",\n  skip = 3\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#column-names-from-excel",
+    "href": "presentations/DataScience/data-import.html#column-names-from-excel",
+    "title": "Data Import",
+    "section": "Column names from Excel",
+    "text": "Column names from Excel\nIf the column names are not in the first row:\n\nread_excel(\n  \"data/survey.xlsx\",\n  skip = 2,\n  col_names = TRUE\n)\n\nIf there are no good column names:\n\nread_excel(\n  \"data/survey.xlsx\",\n  col_names = c(\"id\", \"group\", \"score_pre\", \"score_post\")\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#clean-names-with-janitor",
+    "href": "presentations/DataScience/data-import.html#clean-names-with-janitor",
+    "title": "Data Import",
+    "section": "Clean names with janitor",
+    "text": "Clean names with janitor\nSpreadsheet column names are often awkward.\n\nlibrary(janitor)\n\nsurvey &lt;- read_excel(\"data/survey.xlsx\") |&gt;\n  clean_names()\n\nExample:\n\"Student ID\"      → student_id\n\"Pre-Test Score\"  → pre_test_score\n\"Date Enrolled\"   → date_enrolled"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#multiple-sheets",
+    "href": "presentations/DataScience/data-import.html#multiple-sheets",
+    "title": "Data Import",
+    "section": "Multiple sheets",
+    "text": "Multiple sheets\nA common pattern: one sheet per month, year, site, or condition.\n\npath &lt;- \"data/monthly_sales.xlsx\"\n\nsheets &lt;- excel_sheets(path)\n\nsales &lt;- sheets |&gt;\n  set_names() |&gt;\n  map_dfr(\n    ~ read_excel(path, sheet = .x),\n    .id = \"sheet\"\n  )"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#spreadsheet-best-practices",
+    "href": "presentations/DataScience/data-import.html#spreadsheet-best-practices",
+    "title": "Data Import",
+    "section": "Spreadsheet best practices",
+    "text": "Spreadsheet best practices\nFor analysis-friendly spreadsheets:\n\nOne table per sheet\nOne variable per column\nOne observation per row\nNo merged cells\nNo empty rows inside the data\nStore meaning in cells, not colors\nUse consistent column names\n\n\nIf you receive messy Excel files, import the data first, then clean it in R rather than manually editing the original file."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-2-of-6-spreadsheets",
+    "href": "presentations/DataScience/data-import.html#coding-break-2-of-6-spreadsheets",
+    "title": "Data Import",
+    "section": "Coding Break 2 of 6: Spreadsheets",
+    "text": "Coding Break 2 of 6: Spreadsheets\n\nPractice example: use readxl arguments to import only the true data rectangle from a messy workbook.\n\nTime: 7 minutes\nReference: R4DS spreadsheet strategy: inspect sheets, skip metadata, target the cell range\n\nlibrary(tidyverse)\nlibrary(readxl)\n\npath &lt;- readxl_example(\"deaths.xlsx\")\nexcel_sheets(path)\n\n# First read: intentionally messy\nraw &lt;- read_excel(path)\n\n# Better read: target the actual data rectangle\ndeaths &lt;- read_excel(path, range = \"A5:F15\")\n\nglimpse(raw)\nglimpse(deaths)\n\nYour turn:\n\nCompare raw and deaths: which one is analysis-ready?\nReplace range = \"A5:F15\" with skip = and n_max =\nClean the column names with janitor::clean_names() if available\nCount how many rows are in the cleaned data\n\nExpected result: the cleaned object should contain only the table, not the title or notes above it.\nStretch: explain what information in the workbook should not be part of the data frame."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#why-databases",
+    "href": "presentations/DataScience/data-import.html#why-databases",
+    "title": "Data Import",
+    "section": "Why databases?",
+    "text": "Why databases?\nDatabases are useful when:\n\nData is too large to load all at once\nMultiple people need access\nData is updated regularly\nYou only need a subset of a large table\nThe data already lives in a structured system\n\n\nWith databases, you usually work lazily: write dplyr code, translate to SQL, and collect only the result you need."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#dbi-and-dbplyr",
+    "href": "presentations/DataScience/data-import.html#dbi-and-dbplyr",
+    "title": "Data Import",
+    "section": "DBI and dbplyr",
+    "text": "DBI and dbplyr\nTwo key packages:\n\n\n\nPackage\nRole\n\n\n\n\nDBI\nConnect to databases\n\n\ndbplyr\nTranslate dplyr into SQL\n\n\n\n\nlibrary(DBI)\nlibrary(dbplyr)\nlibrary(duckdb)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#create-a-local-demo-database",
+    "href": "presentations/DataScience/data-import.html#create-a-local-demo-database",
+    "title": "Data Import",
+    "section": "Create a local demo database",
+    "text": "Create a local demo database\nFor teaching, duckdb is convenient because it works locally.\n\ncon &lt;- dbConnect(duckdb())\n\ncopy_to(con, ggplot2::mpg, \"mpg\", temporary = FALSE)\n\nList tables:\n\ndbListTables(con)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#reference-a-table",
+    "href": "presentations/DataScience/data-import.html#reference-a-table",
+    "title": "Data Import",
+    "section": "Reference a table",
+    "text": "Reference a table\n\nmpg_db &lt;- tbl(con, \"mpg\")\nmpg_db\n\nThis does not pull the full table into R.\nIt creates a database-backed table reference."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#use-dplyr-on-a-database",
+    "href": "presentations/DataScience/data-import.html#use-dplyr-on-a-database",
+    "title": "Data Import",
+    "section": "Use dplyr on a database",
+    "text": "Use dplyr on a database\n\nsuv_query &lt;- mpg_db |&gt;\n  filter(class == \"suv\") |&gt;\n  select(manufacturer, model, displ, cty, hwy) |&gt;\n  arrange(desc(hwy))\n\nLook at the query:\n\nsuv_query"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#sql-translation",
+    "href": "presentations/DataScience/data-import.html#sql-translation",
+    "title": "Data Import",
+    "section": "SQL translation",
+    "text": "SQL translation\n\nshow_query(suv_query)\n\ndbplyr translates your dplyr code into SQL.\nThat means you can use familiar tidyverse verbs without writing SQL by hand."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#collect",
+    "href": "presentations/DataScience/data-import.html#collect",
+    "title": "Data Import",
+    "section": "collect()",
+    "text": "collect()\nNothing comes fully into R until you use collect().\n\nsuvs &lt;- suv_query |&gt;\n  collect()\n\n\nFilter and select before collect() whenever possible. Bring back only the rows and columns you need."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#disconnect-when-finished",
+    "href": "presentations/DataScience/data-import.html#disconnect-when-finished",
+    "title": "Data Import",
+    "section": "Disconnect when finished",
+    "text": "Disconnect when finished\n\ndbDisconnect(con, shutdown = TRUE)\n\nForgetting to disconnect is usually not disastrous in class, but it is good practice."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-3-of-6-databases",
+    "href": "presentations/DataScience/data-import.html#coding-break-3-of-6-databases",
+    "title": "Data Import",
+    "section": "Coding Break 3 of 6: Databases",
+    "text": "Coding Break 3 of 6: Databases\n\nPractice example: use dplyr verbs on a database table, then collect only the result you need.\n\nTime: 5 minutes\nReference: R4DS database workflow: connect → reference a table → query lazily → collect()\n\nlibrary(tidyverse)\nlibrary(DBI)\nlibrary(dbplyr)\n\ncon &lt;- dbConnect(RSQLite::SQLite(), \":memory:\")\ncopy_to(con, mpg, \"mpg\", temporary = FALSE, overwrite = TRUE)\n\nmpg_db &lt;- tbl(con, \"mpg\")\n\ncompact_summary &lt;- mpg_db |&gt;\n  filter(class == \"compact\") |&gt;\n  group_by(manufacturer) |&gt;\n  summarize(\n    n = n(),\n    mean_hwy = mean(hwy, na.rm = TRUE),\n    .groups = \"drop\"\n  ) |&gt;\n  arrange(desc(mean_hwy))\n\ncompact_summary |&gt; show_query()\ncompact_summary |&gt; collect()\n\ndbDisconnect(con)\n\nYour turn:\n\nChange the filter to a different class\nUse show_query() before collect()\nMove collect() earlier in the pipeline and discuss what changes\n\nExpected result: a small local tibble only after collect() is called.\nStretch: add min_hwy and max_hwy to the summary."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#why-arrow",
+    "href": "presentations/DataScience/data-import.html#why-arrow",
+    "title": "Data Import",
+    "section": "Why Arrow?",
+    "text": "Why Arrow?\nArrow helps when data is larger or stored in efficient columnar formats.\nCommon use cases:\n\nLarge .parquet files\nMany files in a folder\nDatasets too large to comfortably read into memory\nInteroperability across R, Python, and other tools\n\n\nParquet stores data by column, which can make reading selected columns much faster."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#read-a-parquet-file",
+    "href": "presentations/DataScience/data-import.html#read-a-parquet-file",
+    "title": "Data Import",
+    "section": "Read a Parquet file",
+    "text": "Read a Parquet file\n\nlibrary(arrow)\n\nmpg &lt;- read_parquet(\"data/mpg.parquet\")\n\nWrite a Parquet file:\n\nwrite_parquet(ggplot2::mpg, \"data/mpg.parquet\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#open-a-dataset-lazily",
+    "href": "presentations/DataScience/data-import.html#open-a-dataset-lazily",
+    "title": "Data Import",
+    "section": "Open a dataset lazily",
+    "text": "Open a dataset lazily\n\nmpg_ds &lt;- open_dataset(\"data/mpg_parquet_folder\")\n\nThen use dplyr:\n\nmpg_ds |&gt;\n  filter(class == \"compact\") |&gt;\n  select(manufacturer, model, cty, hwy) |&gt;\n  collect()"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#arrow-workflow",
+    "href": "presentations/DataScience/data-import.html#arrow-workflow",
+    "title": "Data Import",
+    "section": "Arrow workflow",
+    "text": "Arrow workflow\nopen_dataset()\n  ↓\nfilter() / select() / summarize()\n  ↓\ncollect()\n\nThe workflow is similar to databases: delay loading the data until the result is smaller."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#csv-vs-parquet",
+    "href": "presentations/DataScience/data-import.html#csv-vs-parquet",
+    "title": "Data Import",
+    "section": "CSV vs Parquet",
+    "text": "CSV vs Parquet\n\n\n\nFeature\nCSV\nParquet\n\n\n\n\nHuman readable\nYes\nNo\n\n\nStores column types\nNo\nYes\n\n\nEfficient for large data\nLess\nMore\n\n\nWorks everywhere\nYes\nIncreasingly yes\n\n\nGood for long-term sharing\nOften\nOften, with documentation"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-4-of-6-arrow-and-parquet",
+    "href": "presentations/DataScience/data-import.html#coding-break-4-of-6-arrow-and-parquet",
+    "title": "Data Import",
+    "section": "Coding Break 4 of 6: Arrow and Parquet",
+    "text": "Coding Break 4 of 6: Arrow and Parquet\n\nPractice example: write a Parquet file, read it back, and compare it with CSV.\n\nTime: 5 minutes\nReference: R4DS Arrow workflow: use Parquet/Arrow when data is large, columnar, or split across files\n\nlibrary(tidyverse)\nlibrary(arrow)\n\ndir.create(\"data\", showWarnings = FALSE)\n\nwrite_csv(mpg, \"data/mpg.csv\")\nwrite_parquet(mpg, \"data/mpg.parquet\")\n\nmpg_csv &lt;- read_csv(\"data/mpg.csv\")\nmpg_parquet &lt;- read_parquet(\"data/mpg.parquet\")\n\nglimpse(mpg_csv)\nglimpse(mpg_parquet)\n\nfile.info(\"data/mpg.csv\", \"data/mpg.parquet\") |&gt;\n  as_tibble(rownames = \"file\") |&gt;\n  select(file, size)\n\nYour turn:\n\nCompare the column types from CSV and Parquet\nCompare file sizes with file.info()\nFilter mpg_parquet to one manufacturer\n\nExpected result: both imports should contain the same observations, but Parquet preserves column types more explicitly.\nStretch: use open_dataset(\"data/mpg.parquet\"), filter lazily, then call collect()."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#why-hierarchical-data-is-different",
+    "href": "presentations/DataScience/data-import.html#why-hierarchical-data-is-different",
+    "title": "Data Import",
+    "section": "Why hierarchical data is different",
+    "text": "Why hierarchical data is different\nMost tidyverse tools expect rectangular data:\nrows = observations\ncolumns = variables\nBut data from APIs, web services, and JSON often arrives as a tree.\nstudent\n  ├── id\n  ├── name\n  ├── contact\n  │     ├── email\n  │     └── year\n  └── scores\n        ├── quiz 1\n        └── quiz 2\n\nRectangling means taking hierarchical, tree-like data and converting it into rows and columns."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#chapter-roadmap",
+    "href": "presentations/DataScience/data-import.html#chapter-roadmap",
+    "title": "Data Import",
+    "section": "Chapter roadmap",
+    "text": "Chapter roadmap\nR4DS builds the rectangling chapter in this order:\n\nLists: the R data structure that can hold hierarchy\nList-columns: lists inside tibbles\nUnnesting: converting list-columns into rows or columns\nCase studies: repeated widening and lengthening\nJSON: the most common source of hierarchical data from the web\n\n\nThe core skill is learning to inspect one level of the hierarchy at a time."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#lists-can-preserve-hierarchy",
+    "href": "presentations/DataScience/data-import.html#lists-can-preserve-hierarchy",
+    "title": "Data Import",
+    "section": "Lists can preserve hierarchy",
+    "text": "Lists can preserve hierarchy\nAtomic vectors are homogeneous and flat. Lists can hold different types and can contain other lists.\n\nx1 &lt;- list(1:4, \"a\", TRUE)\nstr(x1)\n\nx2 &lt;- list(\n  id = 1,\n  name = \"Ana\",\n  contact = list(email = \"ana@example.edu\", year = 2),\n  scores = list(88, 91)\n)\nstr(x2)\n\n\nUse str() for a compact view. Use View() when the object becomes too deep to understand in the console."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#c-flattens-list-preserves",
+    "href": "presentations/DataScience/data-import.html#c-flattens-list-preserves",
+    "title": "Data Import",
+    "section": "c() flattens; list() preserves",
+    "text": "c() flattens; list() preserves\nThis distinction is subtle but important.\n\nc(c(1, 2), c(3, 4))\n\nlist(list(1, 2), list(3, 4)) |&gt;\n  str()\n\nc() combines values into one flat vector when it can.\nlist() keeps the nested structure intact."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#list-columns",
+    "href": "presentations/DataScience/data-import.html#list-columns",
+    "title": "Data Import",
+    "section": "List-columns",
+    "text": "List-columns\nA tibble can contain a list-column: a column where each cell is a list.\n\ndf &lt;- tibble(\n  student = c(\"Ana\", \"Ben\"),\n  scores = list(\n    list(88, 91),\n    list(72, 85, 90)\n  )\n)\n\ndf\ndf |&gt; pull(scores) |&gt; str()\n\nList-columns are common after reading JSON or nesting data. They print compactly because each cell may contain many values."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#named-versus-unnamed-list-columns",
+    "href": "presentations/DataScience/data-import.html#named-versus-unnamed-list-columns",
+    "title": "Data Import",
+    "section": "Named versus unnamed list-columns",
+    "text": "Named versus unnamed list-columns\nR4DS emphasizes two common shapes.\n\n# Named elements: usually become columns\ndf_named &lt;- tribble(\n  ~x , ~y                   ,\n   1 , list(a = 11, b = 12) ,\n   2 , list(a = 21, b = 22) ,\n   3 , list(a = 31, b = 32)\n)\n\n# Unnamed repeated elements: usually become rows\ndf_unnamed &lt;- tribble(\n  ~x , ~y               ,\n   1 , list(11, 12, 13) ,\n   2 , list(21)         ,\n   3 , list(31, 32)\n)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#the-core-decision",
+    "href": "presentations/DataScience/data-import.html#the-core-decision",
+    "title": "Data Import",
+    "section": "The core decision",
+    "text": "The core decision\n\n\n\n\n\n\n\n\nWhat the list-column contains\nNatural direction\nFunction\n\n\n\n\nNamed pieces with stable names\nMake variables\nunnest_wider()\n\n\nRepeated values within an observation\nMake observations\nunnest_longer()\n\n\nMany nested pieces but you only need a few\nExtract selected variables\nhoist()\n\n\nA nested data frame\nExpand rows and columns\nunnest()\n\n\n\n\nFirst ask: “Do these children represent variables or repeated observations?”"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#unnest_wider-for-named-elements",
+    "href": "presentations/DataScience/data-import.html#unnest_wider-for-named-elements",
+    "title": "Data Import",
+    "section": "unnest_wider() for named elements",
+    "text": "unnest_wider() for named elements\nWhen each list has named pieces, put each piece into its own column.\n\ndf_named |&gt;\n  unnest_wider(y)\n\nUse names_sep = when the new names might conflict or when you want to preserve the original column name.\n\ndf_named |&gt;\n  unnest_wider(y, names_sep = \"_\")"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#unnest_longer-for-repeated-values",
+    "href": "presentations/DataScience/data-import.html#unnest_longer-for-repeated-values",
+    "title": "Data Import",
+    "section": "unnest_longer() for repeated values",
+    "text": "unnest_longer() for repeated values\nWhen each row contains multiple values of the same kind, put each value into its own row.\n\ndf_unnamed |&gt;\n  unnest_longer(y)\n\nNotice what happens: the other columns are repeated as needed."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#empty-values-can-drop-rows",
+    "href": "presentations/DataScience/data-import.html#empty-values-can-drop-rows",
+    "title": "Data Import",
+    "section": "Empty values can drop rows",
+    "text": "Empty values can drop rows\nBy default, a row with an empty list contributes zero rows.\n\ndf_empty &lt;- tribble(\n  ~student , ~scores      ,\n  \"Ana\"    , list(88, 91) ,\n  \"Ben\"    , list(72)     ,\n  \"Clara\"  , list()\n)\n\ndf_empty |&gt;\n  unnest_longer(scores)\n\nUse keep_empty = TRUE if the empty observation should remain.\n\ndf_empty |&gt;\n  unnest_longer(scores, keep_empty = TRUE)"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#inconsistent-types-may-stay-as-lists",
+    "href": "presentations/DataScience/data-import.html#inconsistent-types-may-stay-as-lists",
+    "title": "Data Import",
+    "section": "Inconsistent types may stay as lists",
+    "text": "Inconsistent types may stay as lists\nSometimes a list-column contains values that cannot be combined into one atomic type.\n\ndf_mixed &lt;- tribble(\n  ~x  , ~y                 ,\n  \"a\" , list(1)            ,\n  \"b\" , list(\"a\", TRUE, 5)\n)\n\ndf_mixed |&gt;\n  unnest_longer(y)\n\n\nIf R cannot find a common type, the result may remain a list-column. That is not a failure; it means you need to inspect and clean deliberately."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#hoist-extracts-selected-pieces",
+    "href": "presentations/DataScience/data-import.html#hoist-extracts-selected-pieces",
+    "title": "Data Import",
+    "section": "hoist() extracts selected pieces",
+    "text": "hoist() extracts selected pieces\nunnest_wider() can create many columns. Use hoist() when you only want a few fields.\n\nstudents_nested &lt;- tibble(\n  record = list(\n    list(\n      id = 1,\n      name = \"Ana\",\n      scores = list(88, 91),\n      contact = list(email = \"ana@example.edu\", year = 2)\n    ),\n    list(\n      id = 2,\n      name = \"Ben\",\n      scores = list(72, 85, 90),\n      contact = list(email = \"ben@example.edu\", year = 1)\n    )\n  )\n)\n\nstudents &lt;- students_nested |&gt;\n  hoist(\n    record,\n    id = \"id\",\n    name = \"name\",\n    scores = \"scores\",\n    contact = \"contact\"\n  )\n\nstudents"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#case-study-pattern-one-level-at-a-time",
+    "href": "presentations/DataScience/data-import.html#case-study-pattern-one-level-at-a-time",
+    "title": "Data Import",
+    "section": "Case-study pattern: one level at a time",
+    "text": "Case-study pattern: one level at a time\nReal hierarchical data usually needs repeated steps.\nInspect\n  ↓\nIf you see a list of records → unnest_longer()\n  ↓\nIf each record is a named list → unnest_wider() or hoist()\n  ↓\nIf a field is another named list → unnest_wider()\n  ↓\nIf a field contains repeated values → unnest_longer()\n  ↓\nInspect again\n\nRectangling is iterative: inspect → choose wider/longer/hoist → inspect again."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#json-is-a-common-source-of-hierarchy",
+    "href": "presentations/DataScience/data-import.html#json-is-a-common-source-of-hierarchy",
+    "title": "Data Import",
+    "section": "JSON is a common source of hierarchy",
+    "text": "JSON is a common source of hierarchy\nJSON is common for APIs and web data.\n[\n  {\n    \"id\": 1,\n    \"name\": \"Ana\",\n    \"contact\": {\"email\": \"ana@example.edu\", \"year\": 2},\n    \"scores\": [88, 91]\n  },\n  {\n    \"id\": 2,\n    \"name\": \"Ben\",\n    \"contact\": {\"email\": \"ben@example.edu\", \"year\": 1},\n    \"scores\": [72, 85, 90]\n  }\n]"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#read-json-then-rectangle-it",
+    "href": "presentations/DataScience/data-import.html#read-json-then-rectangle-it",
+    "title": "Data Import",
+    "section": "Read JSON, then rectangle it",
+    "text": "Read JSON, then rectangle it\nUse jsonlite::fromJSON(..., simplifyVector = FALSE) when you want to preserve the hierarchy and learn how to rectangle it yourself.\n\nlibrary(jsonlite)\nlibrary(tidyverse)\n\nstudents_json &lt;- fromJSON(\"data/students.json\", simplifyVector = FALSE)\n\nstudents &lt;- tibble(record = students_json) |&gt;\n  hoist(\n    record,\n    id = \"id\",\n    name = \"name\",\n    contact = \"contact\",\n    scores = \"scores\"\n  ) |&gt;\n  unnest_wider(contact) |&gt;\n  unnest_longer(scores, values_to = \"score\", keep_empty = TRUE)\n\nstudents"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#rectangling-decision-guide",
+    "href": "presentations/DataScience/data-import.html#rectangling-decision-guide",
+    "title": "Data Import",
+    "section": "Rectangling decision guide",
+    "text": "Rectangling decision guide\n\n\n\n\n\n\n\n\nIf you see…\nAsk…\nTry…\n\n\n\n\nA top-level list of records\nDoes each element represent a row?\ntibble(record = x) then unnest_longer() if needed\n\n\nA named list-column\nAre these variables?\nunnest_wider()\n\n\nA huge named list-column\nDo I only need a few fields?\nhoist()\n\n\nA repeated unnamed list\nAre these repeated observations?\nunnest_longer()\n\n\nEmpty values\nShould missing observations be kept?\nkeep_empty = TRUE\n\n\nMixed types\nCan they share a type?\ninspect, then clean deliberately"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-5-of-6-hierarchical-data-and-rectangling",
+    "href": "presentations/DataScience/data-import.html#coding-break-5-of-6-hierarchical-data-and-rectangling",
+    "title": "Data Import",
+    "section": "Coding Break 5 of 6: Hierarchical data and rectangling",
+    "text": "Coding Break 5 of 6: Hierarchical data and rectangling\n\nPractice example: turn nested student records into one row per student-score combination.\n\nTime: 9 minutes\nReference: R4DS rectangling workflow: inspect lists, then use hoist(), unnest_wider(), and unnest_longer() one level at a time\n\nlibrary(tidyverse)\n\nstudents_nested &lt;- tibble(\n  record = list(\n    list(\n      id = 1,\n      name = \"Ana\",\n      scores = list(88, 91),\n      contact = list(email = \"ana@example.edu\", year = 2)\n    ),\n    list(\n      id = 2,\n      name = \"Ben\",\n      scores = list(72, 85, 90),\n      contact = list(email = \"ben@example.edu\", year = 1)\n    ),\n    list(\n      id = 3,\n      name = \"Clara\",\n      scores = list(),\n      contact = list(email = \"clara@example.edu\", year = 2)\n    )\n  )\n)\n\nstudents_nested |&gt; pull(record) |&gt; str(max.level = 2)\n\nYour turn:\n\nUse hoist() to extract id, name, scores, and contact\nUse unnest_wider(contact) to create email and year\nUse unnest_longer(scores, values_to = \"score\", keep_empty = TRUE)\nRename or arrange the final columns so the result is easy to read\n\nExpected result: one row per student-score combination, with Clara retained as a row with score = NA.\nStretch: add score_missing = is.na(score) and calculate each student’s mean score."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#what-is-web-scraping",
+    "href": "presentations/DataScience/data-import.html#what-is-web-scraping",
+    "title": "Data Import",
+    "section": "What is web scraping?",
+    "text": "What is web scraping?\n\nWeb scraping means extracting data from HTML pages.\n\nUse web scraping when:\n\nData is visible on a web page\nNo CSV download is available\nNo API is available\nThe page structure is predictable\n\nAvoid scraping when:\n\nThe site prohibits it\nAn API or download exists\nThe page requires complex interaction or login"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#html-basics",
+    "href": "presentations/DataScience/data-import.html#html-basics",
+    "title": "Data Import",
+    "section": "HTML basics",
+    "text": "HTML basics\nWeb pages are built from nested elements.\n&lt;html&gt;\n  &lt;body&gt;\n    &lt;h1&gt;Course schedule&lt;/h1&gt;\n    &lt;table&gt;\n      &lt;tr&gt;&lt;th&gt;Week&lt;/th&gt;&lt;th&gt;Topic&lt;/th&gt;&lt;/tr&gt;\n      &lt;tr&gt;&lt;td&gt;1&lt;/td&gt;&lt;td&gt;Import&lt;/td&gt;&lt;/tr&gt;\n    &lt;/table&gt;\n  &lt;/body&gt;\n&lt;/html&gt;\nWe use selectors to identify the elements we want."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#rvest-basics",
+    "href": "presentations/DataScience/data-import.html#rvest-basics",
+    "title": "Data Import",
+    "section": "rvest basics",
+    "text": "rvest basics\n\nlibrary(rvest)\n\npage &lt;- read_html(\"https://example.com\")\n\nExtract text:\n\npage |&gt;\n  html_elements(\"h1\") |&gt;\n  html_text2()"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#scrape-a-table",
+    "href": "presentations/DataScience/data-import.html#scrape-a-table",
+    "title": "Data Import",
+    "section": "Scrape a table",
+    "text": "Scrape a table\n\ntables &lt;- page |&gt;\n  html_elements(\"table\") |&gt;\n  html_table()\n\nIf there is one table:\n\nmy_table &lt;- tables[[1]]"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#css-selectors",
+    "href": "presentations/DataScience/data-import.html#css-selectors",
+    "title": "Data Import",
+    "section": "CSS selectors",
+    "text": "CSS selectors\n\n\n\nSelector\nMeaning\n\n\n\n\nh1\nall &lt;h1&gt; elements\n\n\n.class-name\nelements with class class-name\n\n\n#id-name\nelement with id id-name\n\n\ntable\nall tables\n\n\na\nall links\n\n\n\n\nUse your browser’s Inspect tool to identify the relevant HTML element."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#scrape-responsibly",
+    "href": "presentations/DataScience/data-import.html#scrape-responsibly",
+    "title": "Data Import",
+    "section": "Scrape responsibly",
+    "text": "Scrape responsibly\nBefore scraping:\n\nCheck whether the site has a download option or API\nRead the site’s terms of use\nDo not overload servers\nAvoid collecting private or sensitive data\nSave a local copy if reproducibility matters\n\n\nJust because you can scrape something does not mean you should."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#coding-break-6-of-6-web-scraping",
+    "href": "presentations/DataScience/data-import.html#coding-break-6-of-6-web-scraping",
+    "title": "Data Import",
+    "section": "Coding Break 6 of 6: Web scraping",
+    "text": "Coding Break 6 of 6: Web scraping\n\nPractice example: read an HTML page and extract a table.\n\nTime: 5 minutes\nReference: R4DS web scraping workflow: read HTML → select elements → extract text or tables → clean the result\n\nlibrary(tidyverse)\nlibrary(rvest)\n\nurl &lt;- \"https://rvest.tidyverse.org/articles/starwars.html\"\n\npage &lt;- read_html(url)\n\ntables &lt;- page |&gt;\n  html_elements(\"table\") |&gt;\n  html_table()\n\nlength(tables)\nstarwars_table &lt;- tables[[1]]\nglimpse(starwars_table)\n\nYour turn:\n\nExtract the first table from the page\nClean column names if needed\nUse filter() or arrange() to answer one question about the table\nIdentify one CSS selector on the page using browser developer tools\n\nExpected result: a tibble created from an HTML table.\nStretch: extract a non-table element, such as headings or links, using html_elements() and html_text2()."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#what-should-i-use",
+    "href": "presentations/DataScience/data-import.html#what-should-i-use",
+    "title": "Data Import",
+    "section": "What should I use?",
+    "text": "What should I use?\n\n\n\nSituation\nRecommended approach\n\n\n\n\nClean CSV\nread_csv()\n\n\nWeird delimiter\nread_delim()\n\n\nSpreadsheet with multiple sheets\nread_excel() + excel_sheets()\n\n\nLarge remote table\ndatabase + dbplyr\n\n\nLarge local columnar files\narrow\n\n\nAPI / nested file\nJSON + rectangling\n\n\nTable on a webpage\nrvest"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#the-import-checklist",
+    "href": "presentations/DataScience/data-import.html#the-import-checklist",
+    "title": "Data Import",
+    "section": "The import checklist",
+    "text": "The import checklist\nAfter importing, ask:\n\nDid I get the expected number of rows?\nDid I get the expected number of columns?\nAre column names usable?\nAre missing values recognized as NA?\nDid R guess the right column types?\nAre dates and numbers parsed correctly?\nDid problems() report anything?"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#minimal-import-workflow",
+    "href": "presentations/DataScience/data-import.html#minimal-import-workflow",
+    "title": "Data Import",
+    "section": "Minimal import workflow",
+    "text": "Minimal import workflow\n\ndf &lt;- read_csv(\n  \"data/my_file.csv\",\n  na = c(\"\", \"NA\", \".\")\n)\n\nglimpse(df)\nproblems(df)\nspec(df)\n\nThen clean:\n\ndf &lt;- df |&gt;\n  janitor::clean_names()"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#optional-final-challenge",
+    "href": "presentations/DataScience/data-import.html#optional-final-challenge",
+    "title": "Data Import",
+    "section": "Optional final challenge",
+    "text": "Optional final challenge\nIf there is time left after the section-by-section coding breaks, choose one mini-project:\n\n\n\n\n\n\n\n\nOption\nStarting point\nGoal\n\n\n\n\nText files\nMessy inline CSV\nImport with correct missing values and types\n\n\nSpreadsheets\nreadxl_example(\"deaths.xlsx\")\nImport only the true data rectangle\n\n\nDatabases\nmpg copied to SQLite\nQuery with dplyr, then collect()\n\n\nArrow\nmpg.parquet\nCompare CSV and Parquet workflows\n\n\nRectangling\nNested student records\nCreate one row per repeated value\n\n\nWeb scraping\nrvest Star Wars page\nExtract and clean an HTML table\n\n\n\n\nThe final challenge is optional. The main practice happens at the end of each section."
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#share-out-questions",
+    "href": "presentations/DataScience/data-import.html#share-out-questions",
+    "title": "Data Import",
+    "section": "Share-out questions",
+    "text": "Share-out questions\nAt the end of practice time, be ready to share:\n\nWhat type of data did you import?\nWhat problem did you encounter?\nHow did you diagnose it?\nWhat function or argument fixed the issue?"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#big-picture",
+    "href": "presentations/DataScience/data-import.html#big-picture",
+    "title": "Data Import",
+    "section": "Big picture",
+    "text": "Big picture\n\nGood data import is not just getting a file into R. It is verifying that R interpreted the data the way you intended.\n\nKey functions to remember:\nread_csv()        read_excel()      tbl()\nproblems()        clean_names()     collect()\nopen_dataset()    fromJSON()        read_html()\nunnest_wider()    unnest_longer()"
+  },
+  {
+    "objectID": "presentations/DataScience/data-import.html#next-steps",
+    "href": "presentations/DataScience/data-import.html#next-steps",
+    "title": "Data Import",
+    "section": "Next steps",
+    "text": "Next steps\nAfter import, the next questions are:\n\nIs each variable in its own column?\nIs each observation in its own row?\nAre values stored consistently?\nWhat transformations are needed before analysis?\n\nThat moves us from import to tidy and transform."
   }
 ]
